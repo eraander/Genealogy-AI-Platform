@@ -5,6 +5,7 @@ from langchain.tools import tool
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_core.prompts import PromptTemplate, ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import ToolMessage, HumanMessage
+from langchain_core.documents import Document
 from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -23,13 +24,46 @@ def create_genealogy_vectorstore():
     print("Creating database")
     loader = DirectoryLoader('./data/horns_hj', glob="**/*.dk.in", loader_cls=TextLoader)
     docs = loader.load()
+    # text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=10, separators=['\n'])
+    splits = []
+    for doc in docs:
+        lines = doc.page_content.split('\n')
+        for line in lines:
+            if line.strip():
+                splits.append(Document(page_content=line.strip(), metadata=doc.metadata))
+    found_in_splits = False
+    hejli_chunks = []
+    for i, split in enumerate(splits):
+        if 'Hejli Olufsen' in split.page_content:
+            found_in_splits = True
+            hejli_chunks.append((i, split))
+            if 'Lien' in split.page_content:
+                print(f"✓ Chunk {i} has BOTH 'Hejli Olufsen' AND 'Lien'")
+                print(f"  Content: {split.page_content[:200]}...")
+    
+    print(f"\nFound 'Hejli Olufsen' in {len(hejli_chunks)} chunks")
 
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
-    splits = text_splitter.split_documents(docs)
-
-    embeddings = OpenAIEmbeddings(api_key=os.getenv("OPENAI_API_KEY"))
-    vectorstore = FAISS.from_documents(splits, embeddings)
-    print(vectorstore)
+    if not found_in_splits:
+        print("✗ 'Hejli Olufsen' NOT FOUND in splits!")
+        print("  The chunks might be splitting the content apart.")
+        exit(1)
+    
+    api_key=os.getenv("OPENAI_API_KEY")
+    try:
+        embeddings = OpenAIEmbeddings(api_key=api_key)
+        print("Embeddings created")
+    except Exception as e:
+        print(f"Failed to create embeddings: {e}")
+        raise
+    try:
+        start = datetime.now()
+        vectorstore = FAISS.from_documents(splits, embeddings)
+        end = datetime.now()
+        print(f"✓ Vectorstore created with {vectorstore.index.ntotal} vectors")
+        print(f"Vectorstore created in {end - start}")
+    except Exception as e:
+        print(f"Failed to create vectorstore: {e}")
+        raise
     return vectorstore
 
 
@@ -136,7 +170,7 @@ def run_agent(state: ConversationState, llm: ChatOpenAI, vectorstore, tools):
 
     user_message = state["messages"][-1] if state["messages"] else ""
 
-    vectorstore = state.get("vectorstore")
+    # vectorstore = state.get("vectorstore")
     if vectorstore:
         relevant_data = vectorstore.similarity_search(user_message.content, k=5)
         context = "\n\n".join([doc.page_content for doc in relevant_data])

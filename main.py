@@ -7,7 +7,6 @@ import os
 import redis
 from langfuse import Langfuse
 from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage
 
 from agent import create_agent_graph, run_agent_assessment, create_genealogy_vectorstore
 
