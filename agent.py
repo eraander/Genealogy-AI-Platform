@@ -22,7 +22,7 @@ from datetime import datetime
 def create_genealogy_vectorstore():
     """Create a vector database from all genealogy .in files"""
     print("Creating database")
-    loader = DirectoryLoader('./data/horns_hj', glob="**/*.dk.in", loader_cls=TextLoader)
+    loader = DirectoryLoader('./data/mors_n', glob="**/*.dk.in", loader_cls=TextLoader)
     docs = loader.load()
     # text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=10, separators=['\n'])
     splits = []
@@ -31,23 +31,7 @@ def create_genealogy_vectorstore():
         for line in lines:
             if line.strip():
                 splits.append(Document(page_content=line.strip(), metadata=doc.metadata))
-    found_in_splits = False
-    hejli_chunks = []
-    for i, split in enumerate(splits):
-        if 'Hejli Olufsen' in split.page_content:
-            found_in_splits = True
-            hejli_chunks.append((i, split))
-            if 'Lien' in split.page_content:
-                print(f"✓ Chunk {i} has BOTH 'Hejli Olufsen' AND 'Lien'")
-                print(f"  Content: {split.page_content[:200]}...")
-    
-    print(f"\nFound 'Hejli Olufsen' in {len(hejli_chunks)} chunks")
-
-    if not found_in_splits:
-        print("✗ 'Hejli Olufsen' NOT FOUND in splits!")
-        print("  The chunks might be splitting the content apart.")
-        exit(1)
-    
+    print(len(splits))
     api_key=os.getenv("OPENAI_API_KEY")
     try:
         embeddings = OpenAIEmbeddings(api_key=api_key)
@@ -61,6 +45,7 @@ def create_genealogy_vectorstore():
         end = datetime.now()
         print(f"✓ Vectorstore created with {vectorstore.index.ntotal} vectors")
         print(f"Vectorstore created in {end - start}")
+        vectorstore.save_local("family_vectorstore")
     except Exception as e:
         print(f"Failed to create vectorstore: {e}")
         raise
@@ -215,12 +200,11 @@ async def run_agent_assessment(app_graph, user_query, thread_id, user_id='1'):
         print(f"Existing state messages count: {len(existing_state.values.get('messages', [])) if existing_state.values else 0}")
     except Exception as e:
         print(f"Could not check existing state: {e}")
-
+    
     final_state = app_graph.invoke(initial_input, config)
+    # content = ""
+    # for event in app_graph.stream(initial_input, config, stream_mode="values"):
+    #    content += event["messages"][-1].content
     last_message = final_state["messages"][-1]
 
-    ai_response = last_message.content
-    return {
-        "user_id": user_id,
-        "response": ai_response,
-    }
+    return last_message.content

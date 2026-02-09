@@ -21,10 +21,10 @@ def process_and_flag(f, query_string, flag_dict):
             query_split = line.split(",")
             record_year_match = re.search('[1|2][0-9][0-9][0-9]', query_split[0])
             if record_year_match:
-            	record_year = record_year_match.group(0)
-            	record_year_range = range(year - year_range, year + year_range)
-            	if all(word in line for word in query_words) and int(record_year) in record_year_range:
-                    print(filename + ": " + line)
+                record_year = record_year_match.group(0)
+                record_year_range = range(year - year_range, year + year_range)
+                if all(word in line for word in query_words) and int(record_year) in record_year_range:
+                    print(f"{filename}: {line}")
 
 
 def process_wb_and_flag(f, query_string, flag_dict):
@@ -34,7 +34,7 @@ def process_wb_and_flag(f, query_string, flag_dict):
         data_words = set(line.split())
         intersect = data_words.intersection(query_words)
         if len(intersect) == len(query_words):
-            print(filename + ": " + line)
+            print(f"{filename}: {line}")
 
 
 def process_file(f, query_string, flag_dict):
@@ -49,13 +49,15 @@ def process_file(f, query_string, flag_dict):
             record_year = int(record_year_match.group(0))
             record_year_range = range(year - year_range, year + year_range)
             if query_string in line and record_year in record_year_range:
-                print(filename + ": " + line)
+                print(f"{filename}: {line}")
 
 
 def open_and_search_files(query_string, flag, flag_dict):
-    for filename in os.listdir(os.path.curdir):
+    data_dir = os.path.join(os.path.dirname(os.getcwd()), 'data')
+    print(data_dir)
+    for filename in os.listdir(data_dir):
         if filename.endswith(".in"):
-            f = open(filename)
+            f = open(os.path.join(data_dir, filename))
             if flag == 'and':
                 process_and_flag(f, query_string, flag_dict)
             elif flag == 'wb_and':

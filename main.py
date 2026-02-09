@@ -1,14 +1,18 @@
 
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Form
+import gradio as gr
 from dotenv import load_dotenv
 import logging
 import os
 import redis
 from langfuse import Langfuse
-from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_community.vectorstores import FAISS
 
 from agent import create_agent_graph, run_agent_assessment, create_genealogy_vectorstore
+
+vector_folder = 'family_vectorstore'
 
 load_dotenv()
 
@@ -30,8 +34,11 @@ vectorstore = None
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global app_graph, vectorstore
-
-    vectorstore = create_genealogy_vectorstore()
+    vectorstore = None
+    if os.path.exists(vector_folder):
+        vectorstore = FAISS.load_local(vector_folder, OpenAIEmbeddings(), allow_dangerous_deserialization=True)
+    else:
+        vectorstore = create_genealogy_vectorstore()
     app_graph = create_agent_graph(llm=llm, redis_client=REDIS_CLIENT, vectorstore=vectorstore)
     yield
     langfuse_client.flush()
@@ -40,7 +47,6 @@ app = FastAPI(lifespan=lifespan)
 
 @app.post("/search_session")
 async def search_session(user_query: str = Form(...), thread_id: str = Form(...)):
-    print('111')
     try:
         print(user_query)
         result = await run_agent_assessment(
@@ -53,4 +59,12 @@ async def search_session(user_query: str = Form(...), thread_id: str = Form(...)
         logging.exception("Graph execution failed.")
         print("Graph failed:", repr(e))
         raise HTTPException(status_code=500, detail=str(e))
+
+async def chat_response(message, history):
+    response = await search_session(message, '1234567')
+    print(response)
+    return response['content']
+
+chat_ui = gr.ChatInterface(fn=chat_response, title="Genealogy Search")
     
+app = gr.mount_gradio_app(app, chat_ui, path='/chat')
