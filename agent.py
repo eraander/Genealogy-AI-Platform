@@ -93,6 +93,7 @@ def execute_tools(state: ConversationState, tools):
         return state
     tool_calls = ai_message.tool_calls
     outputs = []
+    tool_contents = []
 
     for tool_call in tool_calls:
         tool_name = tool_call.get("name")
@@ -120,6 +121,8 @@ def execute_tools(state: ConversationState, tools):
                     name=tool_name,
                 )
             )
+            if tool_name == "search_genealogy_data":
+                tool_contents.append(str(tool_output))
         except Exception as e:
             outputs.append(
                 ToolMessage(
@@ -128,8 +131,12 @@ def execute_tools(state: ConversationState, tools):
                     name=tool_name,
                 )
             )
-    print(outputs)
-    return {"messages": outputs}
+    curr_context = state.get("context", "")
+    updated_context = curr_context
+    if tool_contents:
+        new_context = "\n\n".join(tool_contents)
+        updated_context = f"{curr_context}\n\n{new_context}".strip()
+    return {"messages": outputs, "context": updated_context}
 
 def create_agent_graph(llm: ChatOpenAI, redis_client, vectorstore):
     TOOLS = [create_search_tool(vectorstore)]
@@ -151,19 +158,30 @@ def create_agent_graph(llm: ChatOpenAI, redis_client, vectorstore):
     checkpointer = RedisSaver(redis_client=redis_client)
     return workflow.compile(checkpointer=checkpointer)
 
+_langfuse_cache = {}
+
+def fetch_saved_langfuse_prompt(prompt_name):
+    if prompt_name not in _langfuse_cache:
+        langfuse = Langfuse()
+        _langfuse_cache[prompt_name] = langfuse.get_prompt(prompt_name)
+    return _langfuse_cache[prompt_name]
+
 def run_agent(state: ConversationState, llm: ChatOpenAI, vectorstore, tools):
 
     user_message = state["messages"][-1] if state["messages"] else ""
 
     # vectorstore = state.get("vectorstore")
     if vectorstore:
-        relevant_data = vectorstore.similarity_search(user_message.content, k=5)
-        context = "\n\n".join([doc.page_content for doc in relevant_data])
+        relevant_data = vectorstore.similarity_search(user_message.content, k=3)
+        init_context = "\n\n".join([doc.page_content for doc in relevant_data])
     else:
-        context = ""
-    langfuse = Langfuse()
-    template = langfuse.get_prompt("genealogy-prompt")
-    system_prompt = template.compile(context=context)
+        init_context = ""
+
+    existing_context = state.get("context", "")
+    full_context = f"{existing_context}\n\n{init_context}".strip() if existing_context else init_context
+    # langfuse = Langfuse()
+    template = fetch_saved_langfuse_prompt("genealogy-prompt")
+    system_prompt = template.compile(context=full_context)
     # system_prompt = PromptTemplate.from_template(template)
     agent_llm = llm.bind_tools(tools)
 
@@ -180,9 +198,9 @@ def run_agent(state: ConversationState, llm: ChatOpenAI, vectorstore, tools):
 
     result = chain.invoke({"messages": state["messages"]})
     if result.tool_calls:
-        return {"messages": [result], "next_action": "tools"}
+        return {"messages": [result], "next_action": "tools", "context": full_context}
     else:
-        return {"messages": [result], "next_action": "end"}
+        return {"messages": [result], "next_action": "end", "context": full_context}
 
 async def run_agent_assessment(app_graph, user_query, thread_id, user_id='1'):
     user_message = HumanMessage(content=user_query)
@@ -195,11 +213,6 @@ async def run_agent_assessment(app_graph, user_query, thread_id, user_id='1'):
         "timestamp": datetime.now().isoformat(),
         "next_action": '',
     }
-    try:
-        existing_state = app_graph.get_state(config)
-        print(f"Existing state messages count: {len(existing_state.values.get('messages', [])) if existing_state.values else 0}")
-    except Exception as e:
-        print(f"Could not check existing state: {e}")
     
     final_state = app_graph.invoke(initial_input, config)
     # content = ""
@@ -207,4 +220,11 @@ async def run_agent_assessment(app_graph, user_query, thread_id, user_id='1'):
     #    content += event["messages"][-1].content
     last_message = final_state["messages"][-1]
 
-    return last_message.content
+    ai_response = last_message.content
+
+    retrieved_context = final_state.get("context", "")
+    return {
+        "user_id": user_id,
+        "content": ai_response,
+        "context": retrieved_context
+    }

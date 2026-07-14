@@ -9,6 +9,7 @@ import redis
 from langfuse import Langfuse
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
+from eval import evaluate_agent_output
 
 from agent import create_agent_graph, run_agent_assessment, create_genealogy_vectorstore
 
@@ -28,7 +29,7 @@ REDIS_CLIENT = redis.Redis(
 )
 
 openai_key = os.getenv("OPENAI_API_KEY")
-llm = ChatOpenAI(api_key=openai_key, model="gpt-5", temperature=0)
+llm = ChatOpenAI(api_key=openai_key, model="gpt-4o-mini", temperature=0)
 vectorstore = None
 
 @asynccontextmanager
@@ -54,6 +55,12 @@ async def search_session(user_query: str = Form(...), thread_id: str = Form(...)
             thread_id=thread_id,
             user_query=user_query,
         )
+        evaluation = evaluate_agent_output(
+            query=user_query,
+            context=result['context'],
+            output=result['content']
+        )
+        print(evaluation)
         return result
     except Exception as e:
         logging.exception("Graph execution failed.")
@@ -61,6 +68,7 @@ async def search_session(user_query: str = Form(...), thread_id: str = Form(...)
         raise HTTPException(status_code=500, detail=str(e))
 
 async def chat_response(message, history):
+    # dummy thread_id for now
     response = await search_session(message, '1234567')
     print(response)
     return response['content']
