@@ -1,4 +1,13 @@
 .env
+terraform.tfvars
+.terraform/
+*.tfstate
+*.tfstate.backup
 family_vectorstore
 ai-sdk-preview-python-streaming-example
 web
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
