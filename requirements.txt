@@ -1,0 +1,23 @@
+# Web & Server
+fastapi>=0.100.0
+uvicorn[standard]>=0.22.0
+gradio
+python-dotenv
+
+# AI & LLM Frameworks
+openai
+anthropic
+langchain
+langchain-openai
+langchain-community
+langchain-core
+langgraph
+langgraph-checkpoint-redis
+langfuse
+
+# Vector Store & Search
+faiss-cpu
+
+# Data & Storage
+pydantic
+redis
