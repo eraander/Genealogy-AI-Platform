@@ -3,19 +3,17 @@ import os
 
 from langchain.tools import tool
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain_core.prompts import PromptTemplate, ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import ToolMessage, HumanMessage
 from langchain_core.documents import Document
 from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
 from typing import List
 from langfuse import Langfuse
 from typing_extensions import Annotated, TypedDict
 from langgraph.graph import StateGraph, END
 from langgraph.checkpoint.redis import RedisSaver
 from langgraph.graph.message import add_messages
-from functools import partial
 
 from datetime import datetime
 

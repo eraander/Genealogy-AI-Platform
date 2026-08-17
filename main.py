@@ -55,7 +55,7 @@ async def search_session(user_query: str = Form(...), thread_id: str = Form(...)
             thread_id=thread_id,
             user_query=user_query,
         )
-        evaluation = evaluate_agent_output(
+        evaluation = evaluate_agent_output.delay(
             query=user_query,
             context=result['context'],
             output=result['content']

@@ -5,6 +5,8 @@ from typing import List
 from anthropic import Anthropic
 from dotenv import load_dotenv
 
+from core.celery_app import celery_app
+
 load_dotenv()
 
 claude = Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
@@ -29,7 +31,14 @@ class AgentEvaluationResult(BaseModel):
         self.thoroughness.score]
         return min(metrics) >= 0.8
 
-def evaluate_agent_output(query: str, context: str, output: str) -> str:
+@celery_app.task(
+    bind=True,
+    name="evaluate_agent_output",
+    max_retries=3,
+    default_retry_delay=10,
+    acks_late=True
+)
+def evaluate_agent_output(self, query: str, context: str, output: str) -> str:
     """
     Evaluate the agent output against the query and context.
     """

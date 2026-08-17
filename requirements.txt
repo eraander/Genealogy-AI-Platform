@@ -21,3 +21,5 @@ faiss-cpu
 # Data & Storage
 pydantic
 redis
+
+celery>=5.3.0
