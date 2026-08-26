@@ -14,7 +14,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-RUN mkdir -p /app/data/faiss_index
+RUN mkdir -p /app/sample_data/faiss_index
 
 COPY . .
 

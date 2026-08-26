@@ -13,7 +13,9 @@ from eval import evaluate_agent_output
 
 from agent import create_agent_graph, run_agent_assessment, create_genealogy_vectorstore
 
-vector_folder = 'family_vectorstore'
+data_dir = os.getenv('DATA_PATH', 'data')
+vector_folder = os.getenv('VECTOR_STORE_PATH', 'family_vectorstore')
+index_file = os.path.join(vector_folder, 'index.faiss')
 
 load_dotenv()
 
@@ -36,10 +38,10 @@ vectorstore = None
 async def lifespan(app: FastAPI):
     global app_graph, vectorstore
     vectorstore = None
-    if os.path.exists(vector_folder):
+    if os.path.exists(index_file):
         vectorstore = FAISS.load_local(vector_folder, OpenAIEmbeddings(), allow_dangerous_deserialization=True)
     else:
-        vectorstore = create_genealogy_vectorstore()
+        vectorstore = create_genealogy_vectorstore(data_dir, vector_folder)
     app_graph = create_agent_graph(llm=llm, redis_client=REDIS_CLIENT, vectorstore=vectorstore)
     yield
     langfuse_client.flush()

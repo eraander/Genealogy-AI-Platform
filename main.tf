@@ -98,8 +98,16 @@ resource "kubernetes_deployment" "genealogy_api" {
                         name = "REDIS_PORT"
                         value = "6379"
                     }
+                    env {
+                        name = "VECTOR_STORE_PATH"
+                        value = "/app/sample_data/faiss_index"
+                    }
+                    env {
+                        name = "DATA_PATH"
+                        value = "/app/sample_data"
+                    }
                     volume_mount {
-                        mount_path = "/app/data/faiss_index"
+                        mount_path = "/app/sample_data/faiss_index"
                         name       = "faiss-volume"
                     }
                 }
@@ -156,8 +164,16 @@ resource "kubernetes_deployment" "genealogy_api" {
                         name = "REDIS_PORT"
                         value = "6379"
                     }
+                    env {
+                        name = "VECTOR_STORE_PATH"
+                        value = "/app/sample_data/faiss_index"
+                    }
+                    env {
+                        name = "DATA_PATH"
+                        value = "/app/sample_data"
+                    }
                     volume_mount {
-                        mount_path = "/app/data/faiss_index"
+                        mount_path = "/app/sample_data/faiss_index"
                         name       = "faiss-volume"
                     }
 

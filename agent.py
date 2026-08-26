@@ -15,20 +15,29 @@ from langgraph.graph import StateGraph, END
 from langgraph.checkpoint.redis import RedisSaver
 from langgraph.graph.message import add_messages
 
+from pathlib import Path
+
 from datetime import datetime
 
-def create_genealogy_vectorstore():
+from eval import evaluate_invariant
+
+def create_genealogy_vectorstore(data_dir, vector_folder):
     """Create a vector database from all genealogy .in files"""
     print("Creating database")
-    loader = DirectoryLoader('./data/mors_n', glob="**/*.dk.in", loader_cls=TextLoader)
+    loader = DirectoryLoader(data_dir, glob="**/*.dk.in", loader_cls=TextLoader)
     docs = loader.load()
     # text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=10, separators=['\n'])
     splits = []
+    errors = []
     for doc in docs:
         lines = doc.page_content.split('\n')
+        file_path = doc.metadata.get("source", "")
+        file_name = Path(file_path).name
+        linenum = 0
         for line in lines:
-            if line.strip():
+            if line.strip() and evaluate_invariant(errors, file_name, line, linenum):
                 splits.append(Document(page_content=line.strip(), metadata=doc.metadata))
+            linenum += 1
     print(len(splits))
     api_key=os.getenv("OPENAI_API_KEY")
     try:
@@ -43,7 +52,7 @@ def create_genealogy_vectorstore():
         end = datetime.now()
         print(f"✓ Vectorstore created with {vectorstore.index.ntotal} vectors")
         print(f"Vectorstore created in {end - start}")
-        vectorstore.save_local("family_vectorstore")
+        vectorstore.save_local(vector_folder)
     except Exception as e:
         print(f"Failed to create vectorstore: {e}")
         raise

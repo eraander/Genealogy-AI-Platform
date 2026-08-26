@@ -31,6 +31,16 @@ class AgentEvaluationResult(BaseModel):
         self.thoroughness.score]
         return min(metrics) >= 0.8
 
+def evaluate_invariant(errors, filename, fileline, linenum):
+    """
+    Evaluate the invariant metrics for a given file and line.
+    """
+    if ", bt," in fileline and ".o." not in fileline:
+        errors.append(f"Line {linenum} in {filename} contains baptism without parent.")
+        return False
+    else:
+        return True
+
 @celery_app.task(
     bind=True,
     name="evaluate_agent_output",
