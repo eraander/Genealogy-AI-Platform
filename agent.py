@@ -34,11 +34,12 @@ def create_genealogy_vectorstore(data_dir, vector_folder):
         file_path = doc.metadata.get("source", "")
         file_name = Path(file_path).name
         linenum = 0
-        for line in lines:
-            if line.strip() and evaluate_invariant(errors, file_name, line, linenum):
-                splits.append(Document(page_content=line.strip(), metadata=doc.metadata))
+        for fileline in lines:
+            if fileline.strip() and evaluate_invariant(errors, file_name, fileline, linenum):
+                splits.append(Document(page_content=fileline.strip(), metadata=doc.metadata))
             linenum += 1
     print(len(splits))
+    print(errors)
     api_key=os.getenv("OPENAI_API_KEY")
     try:
         embeddings = OpenAIEmbeddings(api_key=api_key)
@@ -75,11 +76,12 @@ def create_search_tool(vectorstore):
     @tool
     def search_genealogy_data(query: str):
         """
-        Searches the genealogy data for relevant info.
+        Searches the genealogy data for historical records.
+
+        Use this tool when you need to retrieve specific data. 
 
         Args:
-            query (str): The query to search for.
-            vectorstore (object): The vectorstore to search in.
+            query (str): The targeted search terms or individual names to look up.
         """
         results = vectorstore.similarity_search(query, k=5)
         return "\n\n".join([res.page_content for res in results])
