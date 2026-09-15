@@ -1,8 +1,17 @@
-import re
+import re, json
 from typing import Dict, List, Optional, Tuple
 
 def parse_church_record(line: str) -> dict:
-    parts = [p.strip() for p in line.split(",")]
+    raw_line = line.strip()
+    raw_line = raw_line.replace("\xa0", " ")
+    match = re.match(r"^(\d+)\.\s*(.*)$", raw_line)
+    if match:
+        entry_idx = int(match.group(1))
+        content = match.group(2).strip()
+    else:
+        entry_idx = None
+        content = raw_line
+    parts = [p.strip() for p in content.split(",")]
     date, tag = parts[0], parts[1]
 
     # Marriages: Date, Tag, Groom ~ Bride, [Groomsmen], [Notes]
@@ -17,6 +26,7 @@ def parse_church_record(line: str) -> dict:
             notes = ", ".join(parts[4:])
         return {
             "record_type": "marriage",
+            "entry_idx": entry_idx,
             "date": date,
             "tag": tag,
             "location": None,
@@ -29,6 +39,7 @@ def parse_church_record(line: str) -> dict:
     if tag in ("d", "br", "dm", "dk", "d/br"):
         return {
             "record_type": "death",
+            "entry_idx": entry_idx,
             "date": date,
             "tag": tag,
             "location": parts[2],
@@ -49,6 +60,7 @@ def parse_church_record(line: str) -> dict:
             notes = ", ".join(parts[5:])
         return {
             "record_type": "birth",
+            "entry_idx": entry_idx,
             "date": date,
             "tag": tag,
             "location": parts[2],
@@ -61,6 +73,7 @@ def parse_church_record(line: str) -> dict:
     if tag == "intr":
         return {
             "record_type": "introduction",
+            "entry_idx": entry_idx,
             "date": date,
             "tag": tag,
             "location": parts[2],
@@ -71,6 +84,7 @@ def parse_church_record(line: str) -> dict:
     if tag == "kf":
         return {
             "record_type": "confirmation",
+            "entry_idx": entry_idx,
             "date": date,
             "tag": tag,
             "location": parts[2],
@@ -87,6 +101,7 @@ def parse_record_header(line: str) -> Tuple[Optional[int], str, str, str, str]:
     entry_idx, raw_date, event_token, location, and body.
     """
     raw_line = line.strip()
+    raw_line = raw_line.replace("\xa0", " ")
     match = re.match(r"^(\d+)\.\s*(.*)$", raw_line)
     if match:
         entry_idx = int(match.group(1))
@@ -102,11 +117,21 @@ def parse_record_header(line: str) -> Tuple[Optional[int], str, str, str, str]:
     location = parts[2] if len(parts) > 2 else ""
     body = parts[3] if len(parts) > 3 else ""
 
-    return entry_idx, raw_date, event_token, location, body
+    body = segment_census_household(body)
+
+    return {
+            "record_type": "census",
+            "entry_idx": entry_idx,
+            "date": raw_date,
+            "tag": event_token,
+            "location": location,
+            "members": body,
+        }
 
 def segment_census_household(body: str) -> List[str]:
     return [member.strip() for member in body.split(" - ") if member.strip()]
 
+"""
 def parse_member(member: str, year: int) -> List[str]:
     name_regex = r"\b[A-ZÆØÅ][\wæøå]*(?:\s+(?:(?:f\.|v\.|von|van|de|la|de\s+la|den\s+ældre|den\s+yngre)\s+)*[A-ZÆØÅ][\wæøå]*){0,6}\b"
     status_regex = r"(.*)\b((?:u?gift|enke|fraskilt|separeret|i \d\.? ægteskab)[^()]+?)(?=\()"
@@ -139,6 +164,7 @@ def parse_member(member: str, year: int) -> List[str]:
         print(birthyear)
         print(birthplace)
         print(info.strip())
+"""
 
 
 if __name__ == "__main__":
@@ -146,20 +172,16 @@ if __name__ == "__main__":
     church_f = open("proof_of_concept_data/askø.dk.in", "r")
     census_filelines = census_f.readlines()
     church_filelines = church_f.readlines()
-    for line in census_filelines:
-        if not line.strip():
-            continue
-        entry_idx, raw_date, event_token, location, body = parse_record_header(line)
-        year = re.search(r"\d{4}\b", raw_date)[0]
-        # print(entry_idx, raw_date, event_token, location)
-        segmented = segment_census_household(body)
-        # print(segmented)
-        for segment in segmented:
-            parse_member(segment, int(year))
-            # print(segment)
-    for line in church_filelines:
-        if not line.strip():
-            continue
-        payload = parse_church_record(line)
-        print(payload)
+    with open("proof_of_concept_data/askø_output.jsonl", "w") as output_f:
+        for line in church_filelines:
+            if not line.strip():
+                continue
+            payload = parse_church_record(line)
+            output_f.write(json.dumps(payload, ensure_ascii=False) + "\n")
+        for line in census_filelines:
+            if not line.strip():
+                continue
+            census_parsed = parse_record_header(line)
+            output_f.write(json.dumps(census_parsed, ensure_ascii=False) + "\n")
+
         
