@@ -50,10 +50,42 @@ def parse_church_record(line: str) -> dict:
 
     # Births / Baptisms: Date, Tag, Location, Child & Parents, [Witnesses], [Notes]
     if tag in ("b", "bt", "fm", "fk", "hjd"):
-        witnesses, notes = None, None
+        witnesses, notes, is_illeg = None, None, False
+        child, father, mother, gender = None, None, None, None
+        if len(parts) > 3:
+            if ".o." in parts[3]:
+                child_and_parents = parts[3].split(".o.")
+                if child_and_parents[0][-1] == 'd':
+                    gender = "female"
+                elif child_and_parents[0][-1] == 's':
+                    gender = "male"
+                else:
+                    gender = "unknown"
+                child_and_parents[0] = child_and_parents[0][:-1].strip()
+                if "illeg." in child_and_parents[0]:
+                    is_illeg = True
+                    child_and_parents[0] = child_and_parents[0][:-6].strip()
+                child = child_and_parents[0].strip()
+                if " & " in child_and_parents[1]:
+                    parents = child_and_parents[1].split(" & ")
+                    father = parents[0].strip()
+                    mother = parents[1].strip()
+                else:
+                    if is_illeg:
+                        mother = child_and_parents[1].strip()
+                        father = ""
+                    elif " enke" in child_and_parents[1] or "hustru" in child_and_parents[1] or "kone" in child_and_parents[1] or "æreste" in child_and_parents[1]:
+                        mother = child_and_parents[1].strip()
+                        father = ""
+                    else:
+                        father = child_and_parents[1].strip()
+                        mother = ""
         if len(parts) > 4:
             if "test." in parts[4] or "fadd." in parts[4]:
-                witnesses = parts[4]
+                witnesses = parts[4].split(" - ")
+                for i in range(len(witnesses)):
+                    witnesses[i] = witnesses[i].replace("test. ", "")
+                    witnesses[i] = witnesses[i].replace("fadd. ", "")
             else:
                 notes = ", ".join(parts[4:])
         if len(parts) > 5:
@@ -64,7 +96,11 @@ def parse_church_record(line: str) -> dict:
             "date": date,
             "tag": tag,
             "location": parts[2],
-            "child_and_parents": parts[3] if len(parts) > 3 else None,
+            "child": child,
+            "father": father,
+            "mother": mother,
+            "gender": gender,
+            "is_illeg": is_illeg,
             "witnesses": witnesses,
             "notes": notes,
         }
