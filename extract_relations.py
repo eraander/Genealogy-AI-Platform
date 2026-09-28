@@ -10,7 +10,8 @@ class Entity(BaseModel):
     """Base entity ensuring that all extracted spans exist verbatim in raw source text."""
     id: str = Field(description="Unique numerical identifier for the entity")
     gender: Optional[Literal["male", "female", "unknown"]] = None
-    role: Literal["child", "father", "mother", "witness"]
+    role: Optional[Literal["child", "father", "mother", "witness", "bystander"]] = None
+    is_unnamed: bool = Field(default=False, description="True if the person is not mentioned by name, false otherwise")
     relational_notes: Optional[str] = Field(
         None,
         description="Any additional relational notes or context about the entity's relationship to other entities in the record."
@@ -30,7 +31,7 @@ class Entity(BaseModel):
     @field_validator("verbatim_name", "occupation_or_status", "location_raw", mode="after")
     @classmethod
     def check_substring(cls, val: Optional[str], info: ValidationInfo) -> Optional[str]:
-        if not val or not info.context:
+        if not val or val == "[UNNAMED]" or not info.context:
             return val
         raw_text = info.context.get("raw_text", "")
         # Enforce exact verbatim presence in source slice
@@ -83,9 +84,13 @@ class BirthRecordExtraction(BaseModel):
         default_factory=list, 
         description="Godparents / witnesses listed under 'test.' or 'fadd.'"
     )
+    bystanders: List[Entity] = Field(
+        default_factory=list, 
+        description="Godparents / witnesses listed under 'test.' or 'fadd.'"
+    )
     relations: List[Relation] = Field(
         default_factory=list,
-        description="Explicit graph edges (CHILD_OF, SPOUSE_OF, WITNESS_TO, etc.)"
+        description="Anyone mentioned who is not the child, parents, or witnesses."
     )
 
 class ExtractedWitness(BaseModel):
@@ -184,11 +189,11 @@ class CensusMember(BaseModel):
     # Verbatim captures directly from text
     age_raw: Optional[str] = Field(
         None, 
-        description="Verbatim age string including parentheses if present, e.g. '(64)' or '64'"
+        description="Verbatim age if present"
     )
     birth_place_raw: Optional[str] = Field(
         None, 
-        description="Verbatim birthplace including curly braces if present, e.g. '{Askø /Maribo Amt/}' or 'Askø /Maribo Amt/'"
+        description="Verbatim birthplace if present'"
     )
     occupation: Optional[str] = Field(None, description="Verbatim occupation if mentioned")
     position: Optional[str] = Field(
