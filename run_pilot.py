@@ -335,6 +335,29 @@ def extract_census_members(members: List[str], current_id: int) -> Tuple[List[En
             servant_relation = Relation(source_id=entity.id, target_id=men[-1].id if men else women[-1].id, relation_type="SERVANT_OF")
             relations.append(servant_relation)
             current_id += 1
+        if "s moder" in parsed_member[1]:
+            entity = Entity(id=str(current_id), verbatim_name=parsed_member[0], is_unnamed=False, gender="female")
+            entities.append(entity)
+            current_id += 1
+            mother_relation = None
+            if any(keyword in parsed_member[1] for keyword in ["mandens moder", "usfaderens moder", "hans moder"]):
+                mother_relation = Relation(source_id=entity.id, target_id=men[-1].id if men else women[-1].id, relation_type="CHILD_OF")
+            else:
+                mother_relation = Relation(source_id=entity.id, target_id=women[-1].id, relation_type="CHILD_OF")
+            relations.append(mother_relation)
+        if "s fader" in parsed_member[1]:
+            entity = Entity(id=str(current_id), verbatim_name=parsed_member[0], is_unnamed=False, gender="male")
+            entities.append(entity)
+            current_id += 1
+            father_relation = None
+            if any(keyword in parsed_member[1] for keyword in ["mandens fader", "usfaderens fader", "hans fader"]):
+                father_relation = Relation(source_id=entity.id, target_id=men[-1].id if men else women[-1].id, relation_type="CHILD_OF")
+            else:
+                father_relation = Relation(source_id=entity.id, target_id=men[-1].id, relation_type="CHILD_OF")
+            relations.append(father_relation)
+
+
+            
     return entities, relations, current_id
 
 def extract_complex_witness_span(span: str, client, model: str = "gpt-4o-mini") -> WitnessSpanExtraction:

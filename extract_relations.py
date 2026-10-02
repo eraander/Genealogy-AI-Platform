@@ -67,6 +67,7 @@ class Relation(BaseModel):
 
 class BirthRecordExtraction(BaseModel):
     source_date_raw: str = Field(description="Verbatim date string as recorded in record")
+    year: int = Field(description="Year of the event")
     tag: str = Field(description="Tag to identify the event")
     # is_stillborn: bool = Field(default=False, description="True if marked dødfødt/dødfødde")
     is_illegitimate: bool = Field(default=False, description="True if marked uægte or illeg.")
@@ -92,6 +93,14 @@ class BirthRecordExtraction(BaseModel):
         default_factory=list,
         description="Anyone mentioned who is not the child, parents, or witnesses."
     )
+
+    @model_validator(mode="after")
+    def get_record_year(self) -> "BirthRecordExtraction":
+        """Parses the 4-digit census year from the household header and injects it into all members."""
+        match = re.search(r"\b(1\d{3})\b", self.source_date_raw)
+        year = int(match.group(1)) if match else None
+        self.year = year
+        return self
 
 class ExtractedWitness(BaseModel):
     verbatim_name: str = Field(
@@ -243,7 +252,8 @@ class CensusMember(BaseModel):
         return self.census_year - self.age
 
 class CensusRecordExtraction(BaseModel):
-    source_date_raw: str = Field(description="Census year or header date (e.g. '1 Feb 1845', '1 Jul 1787')")
+    source_date_raw: str = Field(description="Census header date (e.g. '1 Feb 1845', '1 Jul 1787')")
+    year: int = Field(description="Census year")
     members: List[CensusMember] = Field(default_factory=list)
     relations: List[Relation] = Field(default_factory=list)
 
@@ -254,6 +264,7 @@ class CensusRecordExtraction(BaseModel):
         year = int(match.group(1)) if match else None
         for m in self.members:
             m.census_year = year
+        self.year = year
         return self
 
 
