@@ -252,7 +252,7 @@ COLLECTIVE_LOC_RE = re.compile(
     r"""(?xi)
     \s*(?:,|og|samt)?\s*
     \b(?P<quant>alle|begge|samp?tlige?)\s+
-    (?:af\s+(?P<loc>[A-ZÆØÅ][\w\s]+)|(?P<ibid>sammesteds|ibidem))\b\.?$
+    (?:af\s+(?P<loc>[A-ZÆØÅ][\w\s]+)|(?P<ibid>sammesteds|ibidem|ibid\.?|ibd\.?))\b\.?$
     """
 )
 
@@ -262,8 +262,6 @@ EXPLICIT_LOC_RE = re.compile(
     (?P<loc>[A-ZÆØÅ][a-zæøå]+(?:\s+[A-ZÆØÅ][a-zæøå]+)*)\s*$
     """
 )
-
-IBID_RE = re.compile(r"\b(?:ibid\.?|ibidem|sammesteds)\b", re.IGNORECASE)
 
 RELATIONS = {
     "barn" : "PARENT_OF",
@@ -275,6 +273,60 @@ RELATIONS = {
     "broder" : "SIBLING_OF",
     "søster" : "SIBLING_OF"
 }
+
+CARRIER_PREFIX = re.compile(
+    r"""(?xi)
+    ^\s*(?:
+        baaren\s+(?:til\s+daaben\s+)?af|
+        baaret\s+af|
+        holdt\s+(?:(?:det|ham|hende|barnet)\s+)?over\s+daaben\s+af|
+        frembaaret\s+af|
+        ført\s+til\s+daaben\s+af|
+        blev\s+(?:holdt\s+over|ført\s+til)\s+daaben\s+af|
+        susc\.?
+    )\s+
+"""
+)
+
+CARRIER_SUFFIX = re.compile(
+    r"""(?xi)
+    \s+(?:
+        (?:som\s+)?(?:bar\s+(?:det|ham|hende|barnet|børnene)?|skal\s+bære\s+(?:det|ham|hende|barnet)?)|
+        (?:som\s+)?holdt\s+(?:(?:det|ham|hende|barnet)\s+)?over\s+daaben|b\. b\.
+    )\b.*$
+"""
+)
+
+CAP_HOLDER_RE = re.compile(
+    r"""(?xi)
+    \s+(?:som\s+)?(?:holdt|holt)\s+(?:(?:christen-?)?huen)\b.*$
+    |
+    \s+(?:stod|gik)\s+hos\b.*$
+"""
+)
+
+
+def classify_and_strip_sponsor(span: str) -> Tuple[str, str, Optional[str]]:
+  """Strips liturgical ritual formulas from sponsor spans.
+
+  Returns: (cleaned_span, role, action_qualifier)
+  """
+  clean = span.strip()
+  role = "witness"
+  qualifier = None
+
+  if CARRIER_PREFIX.search(clean) or CARRIER_SUFFIX.search(clean):
+    role = "carrier"
+    qualifier = "bar barnet"
+    clean = CARRIER_PREFIX.sub("", clean)
+    clean = CARRIER_SUFFIX.sub("", clean).strip(" ,-")
+
+  elif CAP_HOLDER_RE.search(clean):
+    role = "witness"
+    qualifier = "holdt christenhuen"
+    clean = CAP_HOLDER_RE.sub("", clean).strip(" ,-")
+
+  return clean, role, qualifier
 
 def extract_census_members(members: List[str], current_id: int) -> Tuple[List[Entity], List[Relation]]:
     men, women = [], []
