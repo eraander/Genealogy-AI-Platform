@@ -412,7 +412,7 @@ def extract_census_members(members: List[str], current_id: int) -> Tuple[List[En
             
     return entities, relations, current_id
 
-def extract_complex_witness_span(span: str, client, model: str = "gpt-4o-mini") -> WitnessSpanExtraction:
+def extract_complex_witness_span(span: str, client, model: str = "gpt-5.6-luna") -> WitnessSpanExtraction:
     system_prompt = COMPLEX_WITNESS_EXTRACTION_PROMPT
     return client.chat.completions.create(
         model=model,
