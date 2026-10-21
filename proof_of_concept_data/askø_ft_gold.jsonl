@@ -1,0 +1,44 @@
+// source_date_raw: str = Field(description="Census header date (e.g. '1 Feb 1845', '1 Jul 1787')")
+// year: int = Field(description="Census year")
+// members: List[CensusMember] = Field(default_factory=list)
+// relations: List[Relation] = Field(default_factory=list)
+member: Entity = Field(description="Entity node for the household member")
+    census_year: Optional[int] = Field(None, exclude=True)
+    # Verbatim captures directly from text
+    age_raw: Optional[str] = Field(
+        None, 
+        description="Verbatim age if present"
+    )
+    birth_place_raw: Optional[str] = Field(
+        None, 
+        description="Verbatim birthplace if present'"
+    )
+    occupation: Optional[str] = Field(None, description="Verbatim occupation if mentioned")
+    position: Optional[str] = Field(
+        None, 
+        description="Verbatim role in household (e.g. 'hosbonde', 'hans kone', 'deres barn', 'tjenestekarl')"
+    )
+    marital_status_raw: Optional[str] = Field(
+        None, 
+        description="Verbatim marital condition (e.g. 'gift', 'ugift', 'enke 1ste gang')"
+    )
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":[{"verbatim_name":"Rasmus Wærn","position": "hosbonde", "occupation_or_status":"sognepræst", "marital_status_raw":"ugift", "age_raw":"51"}], "relations":[]}
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
+{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}

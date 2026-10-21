@@ -87,7 +87,7 @@ class BirthRecordExtraction(BaseModel):
     )
     bystanders: List[Entity] = Field(
         default_factory=list, 
-        description="Godparents / witnesses listed under 'test.' or 'fadd.'"
+        description="People mentioned who are neither witnesses nor parents"
     )
     relations: List[Relation] = Field(
         default_factory=list,
@@ -191,9 +191,9 @@ class DeathRecordExtraction(BaseModel):
 # 5. CENSUS RECORD SCHEMA (record_type == 'census')
 # ---------------------------------------------------------------------------
 
-class CensusMember(BaseModel):
+class CensusMember(Entity):
 
-    member: Entity = Field(description="Entity node for the household member")
+    # member: Entity = Field(description="Entity node for the household member")
     census_year: Optional[int] = Field(None, exclude=True)
     # Verbatim captures directly from text
     age_raw: Optional[str] = Field(
@@ -204,7 +204,7 @@ class CensusMember(BaseModel):
         None, 
         description="Verbatim birthplace if present'"
     )
-    occupation: Optional[str] = Field(None, description="Verbatim occupation if mentioned")
+    # occupation: Optional[str] = Field(None, description="Verbatim occupation if mentioned")
     position: Optional[str] = Field(
         None, 
         description="Verbatim role in household (e.g. 'hosbonde', 'hans kone', 'deres barn', 'tjenestekarl')"
@@ -214,7 +214,7 @@ class CensusMember(BaseModel):
         description="Verbatim marital condition (e.g. 'gift', 'ugift', 'enke 1ste gang')"
     )
 
-    @field_validator("age_raw", "birth_place_raw", "occupation", "position", "marital_status_raw", mode="after")
+    @field_validator("age_raw", "birth_place_raw", "position", "marital_status_raw", mode="after")
     @classmethod
     def check_census_substrings(cls, val: Optional[str], info: ValidationInfo) -> Optional[str]:
         if not val or not info.context:
@@ -253,7 +253,8 @@ class CensusMember(BaseModel):
 
 class CensusRecordExtraction(BaseModel):
     source_date_raw: str = Field(description="Census header date (e.g. '1 Feb 1845', '1 Jul 1787')")
-    year: int = Field(description="Census year")
+    location_raw: str = Field(description="Census household location")
+    year: Optional[int] = Field(None, description="Census year")
     members: List[CensusMember] = Field(default_factory=list)
     relations: List[Relation] = Field(default_factory=list)
 
@@ -265,6 +266,13 @@ class CensusRecordExtraction(BaseModel):
         for m in self.members:
             m.census_year = year
         self.year = year
+        return self
+    
+    @model_validator(mode="after")
+    def propagate_location(self) -> "CensusRecordExtraction":
+        """Propagates location from the census record to each member of the household"""
+        for m in self.members:
+            m.location_raw = self.location_raw
         return self
 
 

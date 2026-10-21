@@ -1,10 +1,10 @@
 import json, re
 import instructor
 from dotenv import load_dotenv
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Optional
 from openai import OpenAI
 from sqlalchemy.orm import RelationshipDirection
-from extract_relations import SCHEMA_DISPATCHER, get_validation_context, Entity, BirthRecordExtraction, Relation, WitnessSpanExtraction, CensusMember
+from extract_relations import SCHEMA_DISPATCHER, get_validation_context, Entity, BirthRecordExtraction, CensusRecordExtraction, Relation, WitnessSpanExtraction, CensusMember
 
 load_dotenv()
 
@@ -344,28 +344,14 @@ def extract_census_members(members: List[str], current_id: int) -> Tuple[List[En
             age = age_match[0]
             member = re.sub(r"\(\d+\)", "", member).strip()
         parsed_member = member.split(" ; ")
+        entity = CensusMember(id=str(current_id), verbatim_name=parsed_member[0], position=parsed_member[1], is_unnamed=False, age_raw=age, gender="unknown")
+        current_id += 1
         # print(parsed_member)
-        if "mand " in parsed_member[1] + " " or "bonde " in parsed_member[1] + " ":
-            entity = Entity(id=str(current_id), verbatim_name=parsed_member[0], is_unnamed=False, gender="male")
-            men.append(entity)
-            entities.append(entity)
-            current_id += 1
-        if "kone " in parsed_member[1] + " " or "madmoder " in parsed_member[1] + " ":
-            entity = Entity(id=str(current_id), verbatim_name=parsed_member[0], is_unnamed=False, gender="female")
-            women.append(entity)
-            entities.append(entity)
-            current_id += 1
-            if "enke" not in parsed_member[-1] and men:
-                spousal_relation = Relation(source_id=women[-1].id, target_id=men[-1].id, relation_type="SPOUSE_OF")
-                relations.append(spousal_relation)
-        if " barn " in parsed_member[1] + " " or " søn " in parsed_member[1] + " " or " datter " in parsed_member[1]:
-            entity = Entity(id=str(current_id), verbatim_name=parsed_member[0], is_unnamed = False, gender="unknown")
+        if " barn " in parsed_member[1] + " " or "barn af" in parsed_member[1] + " " or "søn " in parsed_member[1] + " " or " datter " in parsed_member[1] + " " or "datter af" in parsed_member[1]:
             if " søn " in parsed_member[1]:
                 entity.gender = "male"
             elif " datter " in parsed_member[1]:
                 entity.gender = "female"
-            entities.append(entity)
-            current_id += 1
             if "deres " in parsed_member[1] or "sidste ægteskab" in parsed_member[1]:
                 father_relation = Relation(source_id=men[-1].id, target_id=entity.id, relation_type="PARENT_OF")
                 relations.append(father_relation)
@@ -377,39 +363,47 @@ def extract_census_members(members: List[str], current_id: int) -> Tuple[List[En
             elif "hans " in parsed_member[1]:
                 father_relation = Relation(source_id=men[-1].id, target_id=entity.id, relation_type="PARENT_OF")
                 relations.append(father_relation)
+        if "mand " in parsed_member[1] + " " or "bonde " in parsed_member[1] + " ":
+            entity.gender = "male"
+            men.append(entity)
+        if "kone " in parsed_member[1] + " " or "madmoder " in parsed_member[1] + " ":
+            entity.gender = "female"
+            women.append(entity)
+            if "enke" not in parsed_member[-1] and men:
+                spousal_relation = Relation(source_id=women[-1].id, target_id=men[-1].id, relation_type="SPOUSE_OF")
+                relations.append(spousal_relation)
         if "tjeneste" in parsed_member[1] or "tjener" in parsed_member[1]:
-            entity = Entity(id=str(current_id), verbatim_name=parsed_member[0], is_unnamed=False, gender="unknown")
             if "dreng" in parsed_member[1] or "karl" in parsed_member[1]:
                 entity.gender = "male"
             elif "pige" in parsed_member[1]:
                 entity.gender = "female"
-            entities.append(entity)
             servant_relation = Relation(source_id=entity.id, target_id=men[-1].id if men else women[-1].id, relation_type="SERVANT_OF")
             relations.append(servant_relation)
-            current_id += 1
         if "s moder" in parsed_member[1]:
-            entity = Entity(id=str(current_id), verbatim_name=parsed_member[0], is_unnamed=False, gender="female")
-            entities.append(entity)
-            current_id += 1
+            entity.gender = "female"
             mother_relation = None
-            if any(keyword in parsed_member[1] for keyword in ["mandens moder", "usfaderens moder", "hans moder"]):
-                mother_relation = Relation(source_id=entity.id, target_id=men[-1].id if men else women[-1].id, relation_type="CHILD_OF")
+            if any(keyword in parsed_member[1] for keyword in ["mandens moder", "usfaderens moder", "bondens moder", "hans moder"]):
+                print(men[-1].id)
+                mother_relation = Relation(source_id=entity.id, target_id=men[-1].id, relation_type="PARENT_OF")
             else:
-                mother_relation = Relation(source_id=entity.id, target_id=women[-1].id, relation_type="CHILD_OF")
+                mother_relation = Relation(source_id=entity.id, target_id=women[-1].id, relation_type="PARENT_OF")
             relations.append(mother_relation)
         if "s fader" in parsed_member[1]:
-            entity = Entity(id=str(current_id), verbatim_name=parsed_member[0], is_unnamed=False, gender="male")
-            entities.append(entity)
-            current_id += 1
+            entity.gender = "male"
             father_relation = None
-            if any(keyword in parsed_member[1] for keyword in ["mandens fader", "usfaderens fader", "hans fader"]):
-                father_relation = Relation(source_id=entity.id, target_id=men[-1].id if men else women[-1].id, relation_type="CHILD_OF")
+            if any(keyword in parsed_member[1] for keyword in ["mandens fader", "usfaderens fader", "bondens fader", "hans fader"]):
+                father_relation = Relation(source_id=entity.id, target_id=men[-1].id, relation_type="PARENT_OF")
             else:
-                father_relation = Relation(source_id=entity.id, target_id=men[-1].id, relation_type="CHILD_OF")
+                father_relation = Relation(source_id=entity.id, target_id=women[-1].id, relation_type="PARENT_OF")
             relations.append(father_relation)
-
-
-            
+        # print(parsed_member, len(parsed_member))
+        if len(parsed_member) < 3:
+          entity.marital_status_raw = "ugift"
+        else:
+          entity.marital_status_raw = parsed_member[-1]
+          if len(parsed_member) > 3:
+            entity.occupation_or_status = parsed_member[2]
+        entities.append(entity)
     return entities, relations, current_id
 
 def extract_complex_witness_span(span: str, client, model: str = "gpt-5.6-luna") -> WitnessSpanExtraction:
@@ -583,8 +577,12 @@ def run_sample_batch(filepath: str, sample_limit: int = 5):
                 print(f"[{idx}] {rec_type.upper()} REJECTED: {e}")
         else:
             entities, relations, current_id = extract_census_members(record["members"], current_id)
-            print(entities)
-            print(relations)
+            print(record["location"])
+            census_record = CensusRecordExtraction(source_date_raw=record["date"], location_raw=record["location"], tag=record["tag"], members=entities, relations=relations)
+            for member in census_record.members:
+              print(member)
+            for relation in census_record.relations:
+              print(relation)
 if __name__ == "__main__":
     # run_sample_batch("proof_of_concept_data/askø_output.jsonl", sample_limit=20)
     run_sample_batch("census_input.jsonl", sample_limit=25)
