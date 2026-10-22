@@ -331,11 +331,12 @@ def classify_and_strip_sponsor(span: str) -> Tuple[str, str, Optional[str]]:
 def extract_census_members(members: List[str], current_id: int) -> Tuple[List[Entity], List[Relation]]:
     men, women = [], []
     relations, entities = [], []
-    for member in members:
+    for i, member in enumerate(members):
         birth_place_raw = ""
         age = ""
         birth_place_match = re.findall("\b{.*?}\b", member)
         age_match = re.findall(r"\(\d+\)", member)
+        relation_needed = True
         # print(age_match)
         if birth_place_match:
             birth_place_raw = birth_place_match[0]
@@ -363,32 +364,45 @@ def extract_census_members(members: List[str], current_id: int) -> Tuple[List[En
             elif "hans " in parsed_member[1]:
                 father_relation = Relation(source_id=men[-1].id, target_id=entity.id, relation_type="PARENT_OF")
                 relations.append(father_relation)
+            if " et " in " " + parsed_member[1] or "plejebarn" in " " + parsed_member[1]:
+                relation = Relation(source_id=entity.id, target_id=men[-1].id, relation_type="LODGING_WITH")
+                relations.append(relation)
+            relation_needed = False
         if "mand " in parsed_member[1] + " " or "bonde " in parsed_member[1] + " ":
             entity.gender = "male"
             men.append(entity)
-        if "kone " in parsed_member[1] + " " or "madmoder " in parsed_member[1] + " ":
+            relation_needed = False
+        elif "kone " in parsed_member[1] + " " or "madmoder " in parsed_member[1] + " ":
             entity.gender = "female"
             women.append(entity)
             if "enke" not in parsed_member[-1] and men:
                 spousal_relation = Relation(source_id=women[-1].id, target_id=men[-1].id, relation_type="SPOUSE_OF")
                 relations.append(spousal_relation)
+                relation_needed = False
         if "tjeneste" in parsed_member[1] or "tjener" in parsed_member[1]:
             if "dreng" in parsed_member[1] or "karl" in parsed_member[1]:
                 entity.gender = "male"
             elif "pige" in parsed_member[1]:
                 entity.gender = "female"
-            servant_relation = Relation(source_id=entity.id, target_id=men[-1].id if men else women[-1].id, relation_type="SERVANT_OF")
-            relations.append(servant_relation)
+            servant_relations = [] 
+            for man in men:
+              servant_relation = Relation(source_id=entity.id, target_id=man.id, relation_type="SERVANT_OF")
+              servant_relations.append(servant_relation)
+            if not servant_relations:
+              servant_relation = Relation(source_id=entity.id, target_id=men[-1].id if men else women[-1].id, relation_type="SERVANT_OF")
+              servant_relations.append(servant_relation)
+            relations.extend(servant_relations)
+            relation_needed = False
         if "s moder" in parsed_member[1]:
             entity.gender = "female"
             mother_relation = None
             if any(keyword in parsed_member[1] for keyword in ["mandens moder", "usfaderens moder", "bondens moder", "hans moder"]):
-                print(men[-1].id)
                 mother_relation = Relation(source_id=entity.id, target_id=men[-1].id, relation_type="PARENT_OF")
             else:
                 mother_relation = Relation(source_id=entity.id, target_id=women[-1].id, relation_type="PARENT_OF")
             relations.append(mother_relation)
-        if "s fader" in parsed_member[1]:
+            relation_needed = False
+        elif "s fader" in parsed_member[1]:
             entity.gender = "male"
             father_relation = None
             if any(keyword in parsed_member[1] for keyword in ["mandens fader", "usfaderens fader", "bondens fader", "hans fader"]):
@@ -396,6 +410,11 @@ def extract_census_members(members: List[str], current_id: int) -> Tuple[List[En
             else:
                 father_relation = Relation(source_id=entity.id, target_id=women[-1].id, relation_type="PARENT_OF")
             relations.append(father_relation)
+            relation_needed = False
+        if i > 0 and relation_needed:
+            # Default relationship if none specified
+            default_relation = Relation(source_id=entity.id, target_id=men[-1].id if men else women[-1].id, relation_type="LODGING_WITH")
+            relations.append(default_relation)
         # print(parsed_member, len(parsed_member))
         if len(parsed_member) < 3:
           entity.marital_status_raw = "ugift"
@@ -522,6 +541,8 @@ def run_sample_batch(filepath: str, sample_limit: int = 5):
         lines = [json.loads(line) for line in f if line.strip()][:sample_limit]
     # unique_num = 0
     current_id = 0
+    relation_count = 0
+    pred_relations = []
     for idx, record in enumerate(lines, 1):
         rec_type = record.get("record_type")
         schema = SCHEMA_DISPATCHER.get(rec_type)
@@ -577,12 +598,30 @@ def run_sample_batch(filepath: str, sample_limit: int = 5):
                 print(f"[{idx}] {rec_type.upper()} REJECTED: {e}")
         else:
             entities, relations, current_id = extract_census_members(record["members"], current_id)
+            # relation_count = 0
             print(record["location"])
+            pred_relations.extend(relations)
             census_record = CensusRecordExtraction(source_date_raw=record["date"], location_raw=record["location"], tag=record["tag"], members=entities, relations=relations)
             for member in census_record.members:
-              print(member)
+                print(member)
             for relation in census_record.relations:
-              print(relation)
+                print(relation)
+            relation_count += len(census_record.relations)
+    with open(f"proof_of_concept_data/askø_ft_gold.jsonl", "r", encoding="utf-8") as f:
+        gold_relations = [json.loads(line) for line in f if line.strip()]
+        print(len(gold_relations), len(pred_relations))
+        assert len(gold_relations) == len(pred_relations)
+        for i in range(len(gold_relations)):
+            gold_rel, pred_rel = gold_relations[i], pred_relations[i]
+            assert gold_rel["source_id"] != gold_rel["target_id"]
+            assert pred_rel.source_id != pred_rel.target_id
+            assert gold_rel["source_id"] == pred_rel.source_id
+            # print(f"Source ID mismatch: {gold_rel['source_id']} != {pred_rel.source_id}")
+            assert gold_rel["target_id"] == pred_rel.target_id
+            assert gold_rel["relation_type"] == pred_rel.relation_type
+
+      
+    
 if __name__ == "__main__":
     # run_sample_batch("proof_of_concept_data/askø_output.jsonl", sample_limit=20)
     run_sample_batch("census_input.jsonl", sample_limit=25)

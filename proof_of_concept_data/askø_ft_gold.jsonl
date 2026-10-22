@@ -1,44 +1,170 @@
-// source_date_raw: str = Field(description="Census header date (e.g. '1 Feb 1845', '1 Jul 1787')")
-// year: int = Field(description="Census year")
-// members: List[CensusMember] = Field(default_factory=list)
-// relations: List[Relation] = Field(default_factory=list)
-member: Entity = Field(description="Entity node for the household member")
-    census_year: Optional[int] = Field(None, exclude=True)
-    # Verbatim captures directly from text
-    age_raw: Optional[str] = Field(
-        None, 
-        description="Verbatim age if present"
-    )
-    birth_place_raw: Optional[str] = Field(
-        None, 
-        description="Verbatim birthplace if present'"
-    )
-    occupation: Optional[str] = Field(None, description="Verbatim occupation if mentioned")
-    position: Optional[str] = Field(
-        None, 
-        description="Verbatim role in household (e.g. 'hosbonde', 'hans kone', 'deres barn', 'tjenestekarl')"
-    )
-    marital_status_raw: Optional[str] = Field(
-        None, 
-        description="Verbatim marital condition (e.g. 'gift', 'ugift', 'enke 1ste gang')"
-    )
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":[{"verbatim_name":"Rasmus Wærn","position": "hosbonde", "occupation_or_status":"sognepræst", "marital_status_raw":"ugift", "age_raw":"51"}], "relations":[]}
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
-{"source_date_raw":"1 Jul 1787", "year":1787, "members":, "relations":,}
+{"source_id": "2", "target_id": "1", "relation_type": "SPOUSE_OF"}
+{"source_id": "1", "target_id": "3", "relation_type": "PARENT_OF"}
+{"source_id": "2", "target_id": "3", "relation_type": "PARENT_OF"}
+{"source_id": "4", "target_id": "1", "relation_type": "LODGING_WITH"}
+{"source_id": "6", "target_id": "5", "relation_type": "SPOUSE_OF"}
+{"source_id": "5", "target_id": "7", "relation_type": "PARENT_OF"}
+{"source_id": "6", "target_id": "7", "relation_type": "PARENT_OF"}
+{"source_id": "5", "target_id": "8", "relation_type": "PARENT_OF"}
+{"source_id": "6", "target_id": "8", "relation_type": "PARENT_OF"}
+{"source_id": "5", "target_id": "9", "relation_type": "PARENT_OF"}
+{"source_id": "6", "target_id": "9", "relation_type": "PARENT_OF"}
+{"source_id": "5", "target_id": "10", "relation_type": "PARENT_OF"}
+{"source_id": "6", "target_id": "10", "relation_type": "PARENT_OF"}
+{"source_id": "5", "target_id": "11", "relation_type": "PARENT_OF"}
+{"source_id": "6", "target_id": "11", "relation_type": "PARENT_OF"}
+{"source_id": "12", "target_id": "13", "relation_type": "PARENT_OF"}
+{"source_id": "14", "target_id": "13", "relation_type": "SPOUSE_OF"}
+{"source_id": "13", "target_id": "15", "relation_type": "PARENT_OF"}
+{"source_id": "14", "target_id": "15", "relation_type": "PARENT_OF"}
+{"source_id": "13", "target_id": "16", "relation_type": "PARENT_OF"}
+{"source_id": "14", "target_id": "16", "relation_type": "PARENT_OF"}
+{"source_id": "17", "target_id": "12", "relation_type": "SERVANT_OF"}
+{"source_id": "17", "target_id": "13", "relation_type": "SERVANT_OF"}
+{"source_id": "18", "target_id": "12", "relation_type": "SERVANT_OF"}
+{"source_id": "18", "target_id": "13", "relation_type": "SERVANT_OF"}
+{"source_id": "20", "target_id": "19", "relation_type": "SPOUSE_OF"}
+{"source_id": "19", "target_id": "21", "relation_type": "PARENT_OF"}
+{"source_id": "20", "target_id": "21", "relation_type": "PARENT_OF"}
+{"source_id": "19", "target_id": "22", "relation_type": "PARENT_OF"}
+{"source_id": "20", "target_id": "22", "relation_type": "PARENT_OF"}
+{"source_id": "23", "target_id": "19", "relation_type": "SERVANT_OF"}
+{"source_id": "25", "target_id": "24", "relation_type": "SPOUSE_OF"}
+{"source_id": "24", "target_id": "26", "relation_type": "PARENT_OF"}
+{"source_id": "25", "target_id": "26", "relation_type": "PARENT_OF"}
+{"source_id": "24", "target_id": "27", "relation_type": "PARENT_OF"}
+{"source_id": "25", "target_id": "27", "relation_type": "PARENT_OF"}
+{"source_id": "24", "target_id": "28", "relation_type": "PARENT_OF"}
+{"source_id": "25", "target_id": "28", "relation_type": "PARENT_OF"}
+{"source_id": "29", "target_id": "24", "relation_type": "SERVANT_OF"}
+{"source_id": "30", "target_id": "24", "relation_type": "SERVANT_OF"}
+{"source_id": "31", "target_id": "24", "relation_type": "LODGING_WITH"}
+{"source_id": "33", "target_id": "32", "relation_type": "SPOUSE_OF"}
+{"source_id": "32", "target_id": "34", "relation_type": "PARENT_OF"}
+{"source_id": "33", "target_id": "34", "relation_type": "PARENT_OF"}
+{"source_id": "32", "target_id": "35", "relation_type": "PARENT_OF"}
+{"source_id": "33", "target_id": "35", "relation_type": "PARENT_OF"}
+{"source_id": "36", "target_id": "35", "relation_type": "SPOUSE_OF"}
+{"source_id": "35", "target_id": "37", "relation_type": "PARENT_OF"}
+{"source_id": "36", "target_id": "37", "relation_type": "PARENT_OF"}
+{"source_id": "35", "target_id": "38", "relation_type": "PARENT_OF"}
+{"source_id": "36", "target_id": "38", "relation_type": "PARENT_OF"}
+{"source_id": "35", "target_id": "39", "relation_type": "PARENT_OF"}
+{"source_id": "36", "target_id": "39", "relation_type": "PARENT_OF"}
+{"source_id": "35", "target_id": "40", "relation_type": "PARENT_OF"}
+{"source_id": "36", "target_id": "40", "relation_type": "PARENT_OF"}
+{"source_id": "42", "target_id": "41", "relation_type": "SPOUSE_OF"}
+{"source_id": "41", "target_id": "43", "relation_type": "PARENT_OF"}
+{"source_id": "42", "target_id": "43", "relation_type": "PARENT_OF"}
+{"source_id": "45", "target_id": "44", "relation_type": "SPOUSE_OF"}
+{"source_id": "44", "target_id": "46", "relation_type": "PARENT_OF"}
+{"source_id": "45", "target_id": "46", "relation_type": "PARENT_OF"}
+{"source_id": "44", "target_id": "47", "relation_type": "PARENT_OF"}
+{"source_id": "45", "target_id": "47", "relation_type": "PARENT_OF"}
+{"source_id": "44", "target_id": "48", "relation_type": "PARENT_OF"}
+{"source_id": "45", "target_id": "48", "relation_type": "PARENT_OF"}
+{"source_id": "44", "target_id": "49", "relation_type": "PARENT_OF"}
+{"source_id": "45", "target_id": "49", "relation_type": "PARENT_OF"}
+{"source_id": "51", "target_id": "50", "relation_type": "SPOUSE_OF"}
+{"source_id": "50", "target_id": "52", "relation_type": "PARENT_OF"}
+{"source_id": "51", "target_id": "52", "relation_type": "PARENT_OF"}
+{"source_id": "53", "target_id": "50", "relation_type": "SERVANT_OF"}
+{"source_id": "54", "target_id": "50", "relation_type": "SERVANT_OF"}
+{"source_id": "56", "target_id": "55", "relation_type": "SPOUSE_OF"}
+{"source_id": "55", "target_id": "57", "relation_type": "PARENT_OF"}
+{"source_id": "56", "target_id": "57", "relation_type": "PARENT_OF"}
+{"source_id": "55", "target_id": "58", "relation_type": "PARENT_OF"}
+{"source_id": "56", "target_id": "58", "relation_type": "PARENT_OF"}
+{"source_id": "60", "target_id": "59", "relation_type": "SPOUSE_OF"}
+{"source_id": "59", "target_id": "61", "relation_type": "PARENT_OF"}
+{"source_id": "60", "target_id": "61", "relation_type": "PARENT_OF"}
+{"source_id": "59", "target_id": "62", "relation_type": "PARENT_OF"}
+{"source_id": "60", "target_id": "62", "relation_type": "PARENT_OF"}
+{"source_id": "59", "target_id": "63", "relation_type": "PARENT_OF"}
+{"source_id": "60", "target_id": "63", "relation_type": "PARENT_OF"}
+{"source_id": "59", "target_id": "64", "relation_type": "PARENT_OF"}
+{"source_id": "60", "target_id": "64", "relation_type": "PARENT_OF"}
+{"source_id": "66", "target_id": "65", "relation_type": "SPOUSE_OF"}
+{"source_id": "65", "target_id": "67", "relation_type": "PARENT_OF"}
+{"source_id": "66", "target_id": "67", "relation_type": "PARENT_OF"}
+{"source_id": "68", "target_id": "65", "relation_type": "SERVANT_OF"}
+{"source_id": "69", "target_id": "65", "relation_type": "LODGING_WITH"}
+{"source_id": "71", "target_id": "70", "relation_type": "SPOUSE_OF"}
+{"source_id": "70", "target_id": "72", "relation_type": "PARENT_OF"}
+{"source_id": "71", "target_id": "72", "relation_type": "PARENT_OF"}
+{"source_id": "70", "target_id": "73", "relation_type": "PARENT_OF"}
+{"source_id": "71", "target_id": "73", "relation_type": "PARENT_OF"}
+{"source_id": "70", "target_id": "74", "relation_type": "PARENT_OF"}
+{"source_id": "71", "target_id": "74", "relation_type": "PARENT_OF"}
+{"source_id": "70", "target_id": "75", "relation_type": "PARENT_OF"}
+{"source_id": "71", "target_id": "75", "relation_type": "PARENT_OF"}
+{"source_id": "70", "target_id": "76", "relation_type": "PARENT_OF"}
+{"source_id": "71", "target_id": "76", "relation_type": "PARENT_OF"}
+{"source_id": "70", "target_id": "77", "relation_type": "PARENT_OF"}
+{"source_id": "71", "target_id": "77", "relation_type": "PARENT_OF"}
+{"source_id": "70", "target_id": "78", "relation_type": "PARENT_OF"}
+{"source_id": "71", "target_id": "78", "relation_type": "PARENT_OF"}
+{"source_id": "81", "target_id": "80", "relation_type": "SPOUSE_OF"}
+{"source_id": "82", "target_id": "79", "relation_type": "SERVANT_OF"}
+{"source_id": "82", "target_id": "80", "relation_type": "SERVANT_OF"}
+{"source_id": "83", "target_id": "79", "relation_type": "SERVANT_OF"}
+{"source_id": "83", "target_id": "80", "relation_type": "SERVANT_OF"}
+{"source_id": "85", "target_id": "84", "relation_type": "SPOUSE_OF"}
+{"source_id": "84", "target_id": "86", "relation_type": "PARENT_OF"}
+{"source_id": "85", "target_id": "86", "relation_type": "PARENT_OF"}
+{"source_id": "87", "target_id": "84", "relation_type": "SERVANT_OF"}
+{"source_id": "88", "target_id": "84", "relation_type": "SERVANT_OF"}
+{"source_id": "89", "target_id": "84", "relation_type": "SERVANT_OF"}
+{"source_id": "90", "target_id": "84", "relation_type": "PARENT_OF"}
+{"source_id": "92", "target_id": "91", "relation_type": "SPOUSE_OF"}
+{"source_id": "92", "target_id": "93", "relation_type": "PARENT_OF"}
+{"source_id": "94", "target_id": "93", "relation_type": "SPOUSE_OF"}
+{"source_id": "93", "target_id": "95", "relation_type": "PARENT_OF"}
+{"source_id": "94", "target_id": "95", "relation_type": "PARENT_OF"}
+{"source_id": "93", "target_id": "96", "relation_type": "PARENT_OF"}
+{"source_id": "94", "target_id": "96", "relation_type": "PARENT_OF"}
+{"source_id": "93", "target_id": "97", "relation_type": "PARENT_OF"}
+{"source_id": "94", "target_id": "97", "relation_type": "PARENT_OF"}
+{"source_id": "99", "target_id": "98", "relation_type": "SPOUSE_OF"}
+{"source_id": "100", "target_id": "98", "relation_type": "SERVANT_OF"}
+{"source_id": "101", "target_id": "98", "relation_type": "SERVANT_OF"}
+{"source_id": "102", "target_id": "98", "relation_type": "LODGING_WITH"}
+{"source_id": "104", "target_id": "103", "relation_type": "SPOUSE_OF"}
+{"source_id": "103", "target_id": "105", "relation_type": "PARENT_OF"}
+{"source_id": "104", "target_id": "105", "relation_type": "PARENT_OF"}
+{"source_id": "103", "target_id": "106", "relation_type": "PARENT_OF"}
+{"source_id": "104", "target_id": "106", "relation_type": "PARENT_OF"}
+{"source_id": "103", "target_id": "107", "relation_type": "PARENT_OF"}
+{"source_id": "104", "target_id": "107", "relation_type": "PARENT_OF"}
+{"source_id": "103", "target_id": "108", "relation_type": "PARENT_OF"}
+{"source_id": "104", "target_id": "108", "relation_type": "PARENT_OF"}
+{"source_id": "109", "target_id": "104", "relation_type": "PARENT_OF"}
+{"source_id": "111", "target_id": "110", "relation_type": "SPOUSE_OF"}
+{"source_id": "110", "target_id": "112", "relation_type": "PARENT_OF"}
+{"source_id": "111", "target_id": "112", "relation_type": "PARENT_OF"}
+{"source_id": "110", "target_id": "113", "relation_type": "PARENT_OF"}
+{"source_id": "111", "target_id": "113", "relation_type": "PARENT_OF"}
+{"source_id": "110", "target_id": "114", "relation_type": "PARENT_OF"}
+{"source_id": "111", "target_id": "114", "relation_type": "PARENT_OF"}
+{"source_id": "110", "target_id": "115", "relation_type": "PARENT_OF"}
+{"source_id": "111", "target_id": "115", "relation_type": "PARENT_OF"}
+{"source_id": "116", "target_id": "111", "relation_type": "PARENT_OF"}
+{"source_id": "118", "target_id": "117", "relation_type": "SPOUSE_OF"}
+{"source_id": "117", "target_id": "119", "relation_type": "PARENT_OF"}
+{"source_id": "118", "target_id": "119", "relation_type": "PARENT_OF"}
+{"source_id": "117", "target_id": "120", "relation_type": "PARENT_OF"}
+{"source_id": "118", "target_id": "120", "relation_type": "PARENT_OF"}
+{"source_id": "117", "target_id": "121", "relation_type": "PARENT_OF"}
+{"source_id": "118", "target_id": "121", "relation_type": "PARENT_OF"}
+{"source_id": "123", "target_id": "122", "relation_type": "SPOUSE_OF"}
+{"source_id": "122", "target_id": "124", "relation_type": "PARENT_OF"}
+{"source_id": "123", "target_id": "124", "relation_type": "PARENT_OF"}
+{"source_id": "126", "target_id": "125", "relation_type": "SPOUSE_OF"}
+{"source_id": "125", "target_id": "127", "relation_type": "PARENT_OF"}
+{"source_id": "126", "target_id": "127", "relation_type": "PARENT_OF"}
+{"source_id": "125", "target_id": "128", "relation_type": "PARENT_OF"}
+{"source_id": "126", "target_id": "128", "relation_type": "PARENT_OF"}
+{"source_id": "130", "target_id": "129", "relation_type": "SPOUSE_OF"}
+{"source_id": "129", "target_id": "131", "relation_type": "PARENT_OF"}
+{"source_id": "130", "target_id": "131", "relation_type": "PARENT_OF"}
+{"source_id": "133", "target_id": "132", "relation_type": "SPOUSE_OF"}
