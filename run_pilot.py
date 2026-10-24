@@ -349,9 +349,9 @@ def extract_census_members(members: List[str], current_id: int) -> Tuple[List[En
         current_id += 1
         # print(parsed_member)
         if " barn " in parsed_member[1] + " " or "barn af" in parsed_member[1] + " " or "søn " in parsed_member[1] + " " or " datter " in parsed_member[1] + " " or "datter af" in parsed_member[1]:
-            if " søn " in parsed_member[1]:
+            if " søn " in parsed_member[1] + " ":
                 entity.gender = "male"
-            elif " datter " in parsed_member[1]:
+            elif " datter " in parsed_member[1] + " ":
                 entity.gender = "female"
             if "deres " in parsed_member[1] or "sidste ægteskab" in parsed_member[1]:
                 father_relation = Relation(source_id=men[-1].id, target_id=entity.id, relation_type="PARENT_OF")
@@ -541,8 +541,8 @@ def run_sample_batch(filepath: str, sample_limit: int = 5):
         lines = [json.loads(line) for line in f if line.strip()][:sample_limit]
     # unique_num = 0
     current_id = 0
-    relation_count = 0
-    pred_relations = []
+    relation_count, entity_count = 0, 0
+    pred_relations, pred_entities = [], []
     for idx, record in enumerate(lines, 1):
         rec_type = record.get("record_type")
         schema = SCHEMA_DISPATCHER.get(rec_type)
@@ -601,12 +601,14 @@ def run_sample_batch(filepath: str, sample_limit: int = 5):
             # relation_count = 0
             print(record["location"])
             pred_relations.extend(relations)
+            pred_entities.extend(entities)
             census_record = CensusRecordExtraction(source_date_raw=record["date"], location_raw=record["location"], tag=record["tag"], members=entities, relations=relations)
             for member in census_record.members:
                 print(member)
             for relation in census_record.relations:
                 print(relation)
             relation_count += len(census_record.relations)
+            entity_count += len(census_record.members)
     with open(f"proof_of_concept_data/askø_ft_gold.jsonl", "r", encoding="utf-8") as f:
         gold_relations = [json.loads(line) for line in f if line.strip()]
         print(len(gold_relations), len(pred_relations))
@@ -619,6 +621,23 @@ def run_sample_batch(filepath: str, sample_limit: int = 5):
             # print(f"Source ID mismatch: {gold_rel['source_id']} != {pred_rel.source_id}")
             assert gold_rel["target_id"] == pred_rel.target_id
             assert gold_rel["relation_type"] == pred_rel.relation_type
+    with open(f"proof_of_concept_data/askø_ft_gold_entities.jsonl", "r", encoding="utf-8") as f:
+        gold_entities = [json.loads(line) for line in f if line.strip()]
+        print(len(gold_entities), len(pred_entities))
+        assert len(gold_entities) == len(pred_entities)
+        for i in range(len(gold_entities)):
+            gold_ent, pred_ent = gold_entities[i], pred_entities[i]
+            assert gold_ent["id"] == pred_ent.id
+            assert gold_ent["age"] == pred_ent.age
+            if not "occupation_or_status" in gold_ent:
+              assert pred_ent.occupation_or_status is None
+            else:
+              assert gold_ent["occupation_or_status"] == pred_ent.occupation_or_status
+            # print(f"Source ID mismatch: {gold_rel['source_id']} != {pred_rel.source_id}")
+            assert gold_ent["verbatim_name"] == pred_ent.verbatim_name
+            assert gold_ent["position"] == pred_ent.position
+            assert gold_ent["marital_status"] == pred_ent.marital_status_raw
+            assert gold_ent["estimated_birth_year"] == pred_ent.estimated_birth_year
 
       
     

@@ -1,0 +1,141 @@
+{"id":"0", "gender":"male", "verbatim_name":"Rasmus Wærn", "position":"hosbonde", "age":51, "estimated_birth_year":1736, "marital_status":"ugift", "occupation_or_status":"sognepræst"}
+{"id":"1", "gender":"male", "verbatim_name":"Ambrosius Løjet", "position":"mand", "age":56, "estimated_birth_year":1731, "marital_status":"i 1. ægteskab", "occupation_or_status":"huusmand og tjener hos præsten"}
+{"id":"2", "gender":"female", "verbatim_name":"Abelone Jørgensdatter", "position":"hans kone", "age":48, "estimated_birth_year":1739, "marital_status":"i 1. ægteskab"}
+{"id":"3", "gender":"female", "verbatim_name":"Magdalene Løjet", "position":"deres datter", "age":17, "estimated_birth_year":1770, "marital_status":"ugift"}
+{"id":"4", "gender":"unknown", "verbatim_name":"Birthe Rasmusdatter", "position":"sig opholdende", "age":60, "estimated_birth_year":1727, "marital_status":"enke efter 1. ægteskab", "occupation_or_status":"inderste og ernærer sig ved at spinde og giøre fiskegarn"}
+{"id":"5", "gender":"male", "verbatim_name":"Jørgen Løjet", "position":"mand", "age":47, "estimated_birth_year":1740, "marital_status":"i 3. ægteskab", "occupation_or_status":"sognedegn"}
+{"id":"6", "gender":"female", "verbatim_name":"Caroline Gotfridsdatter", "position":"hans kone", "age":38, "estimated_birth_year":1749, "marital_status":"i 1. ægteskab"}
+{"id":"7", "gender":"unknown", "verbatim_name":"Rasmus Løjet", "position":"deres barn af sidste ægteskab", "age":12, "estimated_birth_year":1775, "marital_status":"ugift"}
+{"id":"8", "gender":"unknown", "verbatim_name":"Birthe Marie Løjet", "position":"deres barn af sidste ægteskab", "age":10, "estimated_birth_year":1777, "marital_status":"ugift"}
+{"id":"9", "gender":"unknown", "verbatim_name":"Anne Lisbeth Løjet", "position":"deres barn af sidste ægteskab", "age":6, "estimated_birth_year":1781, "marital_status":"ugift"}
+{"id":"10", "gender":"unknown", "verbatim_name":"Maren Sophie Løjet", "position":"deres barn af sidste ægteskab", "age":3, "estimated_birth_year":1784, "marital_status":"ugift"}
+{"id":"11", "gender":"unknown", "verbatim_name":"Jens Løjet", "position":"deres barn af sidste ægteskab", "age":1, "estimated_birth_year":1786, "marital_status":"ugift"}
+{"id":"12", "gender":"male", "verbatim_name":"Hans Pedersen Løjet", "position":"hosbonde", "age":70, "estimated_birth_year":1717, "marital_status":"enkemand efter 1. ægteskab", "occupation_or_status":"bonde og gaardbeboer"}
+{"id":"13", "gender":"male", "verbatim_name":"Jens Løjet", "position":"hans søn og mand", "age":27, "estimated_birth_year":1760, "marital_status":"i 1. ægteskab"}
+{"id":"14", "gender":"female", "verbatim_name":"Maren Westerlin", "position":"hans kone", "age":30, "estimated_birth_year":1757, "marital_status":"i 1. ægteskab"}
+{"id":"15", "gender":"unknown", "verbatim_name":"Peder Løjet", "position":"deres barn", "age":3, "estimated_birth_year":1784, "marital_status":"ugift"}
+{"id":"16", "gender":"unknown", "verbatim_name":"Hans Løjet", "position":"deres barn", "age":2, "estimated_birth_year":1785, "marital_status":"ugift"}
+{"id":"17", "gender":"unknown", "verbatim_name":"Abelone Westerlin", "position":"tjenestefolk", "age":22, "estimated_birth_year":1765, "marital_status":"ugift"}
+{"id":"18", "gender":"unknown", "verbatim_name":"Peder Løjet", "position":"tjenestefolk", "age":15, "estimated_birth_year":1772, "marital_status":"ugift"}
+{"id":"19", "gender":"male", "verbatim_name":"Jeppe Rasmussen", "position":"hosbonde", "age":50, "estimated_birth_year":1737, "marital_status":"i 1. ægteskab", "occupation_or_status":"bonde og gaardbeboer"}
+{"id":"20", "gender":"female", "verbatim_name":"Margrethe Løjet", "position":"madmoder", "age":43, "estimated_birth_year":1744, "marital_status":"i 1. ægteskab"}
+{"id":"21", "gender":"unknown", "verbatim_name":"Rasmus Jeppesen", "position":"deres barn", "age":17, "estimated_birth_year":1770, "marital_status":"ugift"}
+{"id":"22", "gender":"unknown", "verbatim_name":"Abelone Jeppesdatter", "position":"deres barn", "age":9, "estimated_birth_year":1778, "marital_status":"ugift"}
+{"id":"23", "gender":"unknown", "verbatim_name":"Anne Lund", "position":"tjenestefolk", "age":30, "estimated_birth_year":1757, "marital_status":"ugift"}
+{"id":"24", "gender":"male", "verbatim_name":"Niels Hansen Løjet", "position":"hosbonde", "age":35, "estimated_birth_year":1752, "marital_status":"i 1. ægteskab", "occupation_or_status":"bonde og gaardbeboer"}
+{"id":"25", "gender":"female", "verbatim_name":"Bodil Meltoft", "position":"madmoder", "age":30, "estimated_birth_year":1757, "marital_status":"i 1. ægteskab"}
+{"id":"26", "gender":"unknown", "verbatim_name":"Rasmus Løjet", "position":"deres barn", "age":8, "estimated_birth_year":1779, "marital_status":"ugift"}
+{"id":"27", "gender":"unknown", "verbatim_name":"Lisbeth Løjet", "position":"deres barn", "age":4, "estimated_birth_year":1783, "marital_status":"ugift"}
+{"id":"28", "gender":"unknown", "verbatim_name":"Peder Løjet", "position":"deres barn", "age":2, "estimated_birth_year":1785, "marital_status":"ugift"}
+{"id":"29", "gender":"unknown", "verbatim_name":"Elsebeth Hansdatter", "position":"tjenestefolk", "age":19, "estimated_birth_year":1768, "marital_status":"ugift"}
+{"id":"30", "gender":"unknown", "verbatim_name":"Hans Løjet", "position":"tjenestefolk", "age":13, "estimated_birth_year":1774, "marital_status":"ugift"}
+{"id":"31", "gender":"unknown", "verbatim_name":"Rasmus Meltoft", "position":"fraværende paa søe-reiser", "age":26, "estimated_birth_year":1761, "marital_status":"ugift", "occupation_or_status":"enrolleret matros"}
+{"id":"32", "gender":"male", "verbatim_name":"Jens Nielsen", "position":"hosbonde", "age":67, "estimated_birth_year":1720, "marital_status":"i 1. ægteskab", "occupation_or_status":"bonde og gaardbeboer"}
+{"id":"33", "gender":"female", "verbatim_name":"Birthe Løjet", "position":"madmoder", "age":55, "estimated_birth_year":1732, "marital_status":"i 1. ægteskab"}
+{"id":"34", "gender":"unknown", "verbatim_name":"Peder Jensen", "position":"deres barn", "age":21, "estimated_birth_year":1766, "marital_status":"ugift"}
+{"id":"35", "gender":"male", "verbatim_name":"Niels Jensen", "position":"deres barn mand", "age":28, "estimated_birth_year":1759, "marital_status":"i 1. ægteskab"}
+{"id":"36", "gender":"female", "verbatim_name":"Anne Andersdatter", "position":"hans kone", "age":28, "estimated_birth_year":1759, "marital_status":"i 1. ægteskab"}
+{"id":"37", "gender":"unknown", "verbatim_name":"Anders Nielsen", "position":"deres barn", "age":7, "estimated_birth_year":1780, "marital_status":"ugift"}
+{"id":"38", "gender":"unknown", "verbatim_name":"Hans Jørgen Nielsen", "position":"deres barn", "age":5, "estimated_birth_year":1782, "marital_status":"ugift"}
+{"id":"39", "gender":"unknown", "verbatim_name":"Maren Nielsdatter", "position":"deres barn", "age":3, "estimated_birth_year":1784, "marital_status":"ugift"}
+{"id":"40", "gender":"unknown", "verbatim_name":"Jens Nielsen", "position":"deres barn", "age":1, "estimated_birth_year":1786, "marital_status":"ugift"}
+{"id":"41", "gender":"male", "verbatim_name":"Hans Løjet", "position":"mand", "age":56, "estimated_birth_year":1731, "marital_status":"i 1. ægteskab", "occupation_or_status":"bonde og gaardbeboer"}
+{"id":"42", "gender":"female", "verbatim_name":"Else Jørgensdatter", "position":"hans kone", "age":50, "estimated_birth_year":1737, "marital_status":"i 1. ægteskab"}
+{"id":"43", "gender":"male", "verbatim_name":"Hans Hansen Løjet", "position":"deres søn", "age":20, "estimated_birth_year":1767, "marital_status":"ugift"}
+{"id":"44", "gender":"male", "verbatim_name":"Jens Skræder", "position":"mand", "age":52, "estimated_birth_year":1735, "marital_status":"i 1. ægteskab", "occupation_or_status":"bonde og gaardbeboer"}
+{"id":"45", "gender":"female", "verbatim_name":"Anne Løjet", "position":"hans kone", "age":44, "estimated_birth_year":1743, "marital_status":"i 1. ægteskab"}
+{"id":"46", "gender":"unknown", "verbatim_name":"Abelone Skræders", "position":"deres barn", "age":20, "estimated_birth_year":1767, "marital_status":"ugift"}
+{"id":"47", "gender":"unknown", "verbatim_name":"Karen Skræders", "position":"deres barn", "age":16, "estimated_birth_year":1771, "marital_status":"ugift"}
+{"id":"48", "gender":"unknown", "verbatim_name":"Birthe Skræders", "position":"deres barn", "age":12, "estimated_birth_year":1775, "marital_status":"ugift"}
+{"id":"49", "gender":"unknown", "verbatim_name":"Peder Skræders", "position":"deres barn", "age":4, "estimated_birth_year":1783, "marital_status":"ugift"}
+{"id":"50", "gender":"male", "verbatim_name":"Giert Giertsen", "position":"hosbonde", "age":35, "estimated_birth_year":1752, "marital_status":"i 1. ægteskab", "occupation_or_status":"bonde og gaardbeboer"}
+{"id":"51", "gender":"female", "verbatim_name":"Birthe Løjet", "position":"madmoder", "age":32, "estimated_birth_year":1755, "marital_status":"i 1. ægteskab"}
+{"id":"52", "gender":"female", "verbatim_name":"Lisbeth Giertsdatter", "position":"deres datter", "age":6, "estimated_birth_year":1781, "marital_status":"ugift"}
+{"id":"53", "gender":"unknown", "verbatim_name":"Karen Jensdatter", "position":"tjenestefolk", "age":30, "estimated_birth_year":1757, "marital_status":"ugift"}
+{"id":"54", "gender":"unknown", "verbatim_name":"Rasmus Smed", "position":"tjenestefolk", "age":14, "estimated_birth_year":1773, "marital_status":"ugift"}
+{"id":"55", "gender":"male", "verbatim_name":"Peder Westerlin", "position":"mand", "age":64, "estimated_birth_year":1723, "marital_status":"i 2. ægteskab"}
+{"id":"56", "gender":"female", "verbatim_name":"Anne Løjet", "position":"hans kone", "age":49, "estimated_birth_year":1738, "marital_status":"i 1. ægteskab"}
+{"id":"57", "gender":"unknown", "verbatim_name":"Hans Westerlin", "position":"barn af sidste ægteskab", "age":17, "estimated_birth_year":1770, "marital_status":"ugift"}
+{"id":"58", "gender":"unknown", "verbatim_name":"Jens Westerlin", "position":"barn af sidste ægteskab", "age":14, "estimated_birth_year":1773, "marital_status":"ugift"}
+{"id":"59", "gender":"male", "verbatim_name":"Jørgen Andersen Løjet", "position":"mand", "age":39, "estimated_birth_year":1748, "marital_status":"i 1. ægteskab", "occupation_or_status":"bonde og gaardbeboer"}
+{"id":"60", "gender":"female", "verbatim_name":"Sidsel Rasmusdatter", "position":"hans kone", "age":37, "estimated_birth_year":1750, "marital_status":"i 1. ægteskab"}
+{"id":"61", "gender":"unknown", "verbatim_name":"Dorthe Løjet", "position":"deres barn", "age":9, "estimated_birth_year":1778, "marital_status":"ugift"}
+{"id":"62", "gender":"unknown", "verbatim_name":"Anne Pernille Løjet", "position":"deres barn", "age":7, "estimated_birth_year":1780, "marital_status":"ugift"}
+{"id":"63", "gender":"unknown", "verbatim_name":"Grethe Løjet", "position":"deres barn", "age":5, "estimated_birth_year":1782, "marital_status":"ugift"}
+{"id":"64", "gender":"unknown", "verbatim_name":"Anders Løjet", "position":"deres barn", "age":2, "estimated_birth_year":1785, "marital_status":"ugift"}
+{"id":"65", "gender":"male", "verbatim_name":"Jens Schou", "position":"hosbonde", "age":40, "estimated_birth_year":1747, "marital_status":"i 2. ægteskab", "occupation_or_status":"bonde og gaardbeboer"}
+{"id":"66", "gender":"female", "verbatim_name":"Maren Jørgensdatter", "position":"madmoder", "age":30, "estimated_birth_year":1757, "marital_status":"i 1. ægteskab"}
+{"id":"67", "gender":"female", "verbatim_name":"Abelone Margrethe Schou", "position":"hans datter af sidste ægteskab", "age":3, "estimated_birth_year":1784, "marital_status":"ugift"}
+{"id":"68", "gender":"male", "verbatim_name":"Jørgen Løjet", "position":"tjenestekarl", "age":24, "estimated_birth_year":1763, "marital_status":"ugift"}
+{"id":"69", "gender":"unknown", "verbatim_name":"Maren Dams", "position":"et fattigt fader- og moderløs barn som de har taget til dem", "age":13, "estimated_birth_year":1774, "marital_status":"ugift"}
+{"id":"70", "gender":"male", "verbatim_name":"Jørgen Loch", "position":"mand", "age":46, "estimated_birth_year":1741, "marital_status":"i 1. ægteskab", "occupation_or_status":"bonde og gaardbeboer"}
+{"id":"71", "gender":"female", "verbatim_name":"Lucie Giertsdatter", "position":"hans kone", "age":38, "estimated_birth_year":1749, "marital_status":"i 2. ægteskab"}
+{"id":"72", "gender":"unknown", "verbatim_name":"Christen Loch", "position":"deres barn af sidste ægteskab", "age":17, "estimated_birth_year":1770, "marital_status":"ugift"}
+{"id":"73", "gender":"unknown", "verbatim_name":"Maren Loch", "position":"deres barn af sidste ægteskab", "age":15, "estimated_birth_year":1772, "marital_status":"ugift"}
+{"id":"74", "gender":"unknown", "verbatim_name":"Rasmus Loch", "position":"deres barn af sidste ægteskab", "age":12, "estimated_birth_year":1775, "marital_status":"ugift"}
+{"id":"75", "gender":"unknown", "verbatim_name":"Giert Loch", "position":"deres barn af sidste ægteskab", "age":9, "estimated_birth_year":1778, "marital_status":"ugift"}
+{"id":"76", "gender":"unknown", "verbatim_name":"Anne Marie Loch", "position":"deres barn af sidste ægteskab", "age":7, "estimated_birth_year":1780, "marital_status":"ugift"}
+{"id":"77", "gender":"unknown", "verbatim_name":"Niels Loch", "position":"deres barn af sidste ægteskab", "age":5, "estimated_birth_year":1782, "marital_status":"ugift"}
+{"id":"78", "gender":"unknown", "verbatim_name":"Jens Loch", "position":"deres barn af sidste ægteskab", "age":2, "estimated_birth_year":1785, "marital_status":"ugift"}
+{"id":"79", "gender":"male", "verbatim_name":"Hans Grimmer", "position":"hosbonde", "age":76, "estimated_birth_year":1711, "marital_status":"enkemand efter 1. ægteskab", "occupation_or_status":"bonde og gaardbeboer"}
+{"id":"80", "gender":"male", "verbatim_name":"Niels Hansen Løjet", "position":"mand", "age":32, "estimated_birth_year":1755, "marital_status":"i 1. ægteskab", "occupation_or_status":"bonde og gaardbeboer"}
+{"id":"81", "gender":"female", "verbatim_name":"Maren Jeppesdatter", "position":"hans kone", "age":18, "estimated_birth_year":1769, "marital_status":"i 1. ægteskab"}
+{"id":"82", "gender":"unknown", "verbatim_name":"Peder Sørensen", "position":"tjenestefolk", "age":17, "estimated_birth_year":1770, "marital_status":"ugift"}
+{"id":"83", "gender":"unknown", "verbatim_name":"Maren Jensdatter", "position":"tjenestefolk", "age":21, "estimated_birth_year":1766, "marital_status":"ugift"}
+{"id":"84", "gender":"male", "verbatim_name":"Peder Andersen Løjet", "position":"hosbonde", "age":41, "estimated_birth_year":1746, "marital_status":"i 1. ægteskab", "occupation_or_status":"bonde og gaardbeboer"}
+{"id":"85", "gender":"female", "verbatim_name":"Magdalene Jensdatter", "position":"madmoder", "age":26, "estimated_birth_year":1761, "marital_status":"i 1. ægteskab"}
+{"id":"86", "gender":"female", "verbatim_name":"Anne Malene Løjet", "position":"deres datter", "age":4, "estimated_birth_year":1783, "marital_status":"ugift"}
+{"id":"87", "gender":"unknown", "verbatim_name":"Morten Clausen", "position":"tjenestefolk", "age":20, "estimated_birth_year":1767, "marital_status":"ugift"}
+{"id":"88", "gender":"unknown", "verbatim_name":"Anne Margrethe Hansdatter", "position":"tjenestefolk", "age":21, "estimated_birth_year":1766, "marital_status":"ugift"}
+{"id":"89", "gender":"unknown", "verbatim_name":"Peder Nielsen", "position":"tjenestefolk", "age":13, "estimated_birth_year":1774, "marital_status":"ugift"}
+{"id":"90", "gender":"female", "verbatim_name":"Petronelle Pedersdatter", "position":"hosbondens moder", "age":69, "estimated_birth_year":1718, "marital_status":"enke efter 1. ægteskab"}
+{"id":"91", "gender":"male", "verbatim_name":"Mads Kaare", "position":"hosbonde", "age":47, "estimated_birth_year":1740, "marital_status":"i 1. ægteskab", "occupation_or_status":"bonde og gaardbeboer"}
+{"id":"92", "gender":"female", "verbatim_name":"Margrethe Nielsdatter", "position":"madmoder", "age":64, "estimated_birth_year":1723, "marital_status":"i 2. ægteskab"}
+{"id":"93", "gender":"male", "verbatim_name":"Jens Løjet", "position":"hendes søn og mand", "age":30, "estimated_birth_year":1757, "marital_status":"i 1. ægteskab"}
+{"id":"94", "gender":"female", "verbatim_name":"Margrethe Olesdatter", "position":"hans kone", "age":32, "estimated_birth_year":1755, "marital_status":"i 1. ægteskab"}
+{"id":"95", "gender":"unknown", "verbatim_name":"Engel Kirstine Løjet", "position":"deres barn", "age":7, "estimated_birth_year":1780, "marital_status":"ugift"}
+{"id":"96", "gender":"unknown", "verbatim_name":"Maren Løjet", "position":"deres barn", "age":5, "estimated_birth_year":1782, "marital_status":"ugift"}
+{"id":"97", "gender":"unknown", "verbatim_name":"Anne Margrethe Løjet", "position":"deres barn", "age":2, "estimated_birth_year":1785, "marital_status":"ugift"}
+{"id":"98", "gender":"male", "verbatim_name":"Niels Andersen Løjet", "position":"hosbonde", "age":49, "estimated_birth_year":1738, "marital_status":"i 1. ægteskab", "occupation_or_status":"bonde og gaardbeboer"}
+{"id":"99", "gender":"female", "verbatim_name":"Birthe Jensdatter", "position":"madmoder", "age":55, "estimated_birth_year":1732, "marital_status":"i 1. ægteskab"}
+{"id":"100", "gender":"unknown", "verbatim_name":"Hans Jørgensen", "position":"tjenestefolk", "age":24, "estimated_birth_year":1763, "marital_status":"ugift"}
+{"id":"101", "gender":"unknown", "verbatim_name":"Abelone Jørgensdatter", "position":"tjenestefolk", "age":30, "estimated_birth_year":1757, "marital_status":"ugift"}
+{"id":"102", "gender":"unknown", "verbatim_name":"Jens Andersen Løjet", "position":"fraværende paa søe-reiser", "age":32, "estimated_birth_year":1755, "marital_status":"ugift", "occupation_or_status":"skipper"}
+{"id":"103", "gender":"male", "verbatim_name":"Christopher Lund", "position":"mand", "age":39, "estimated_birth_year":1748, "marital_status":"i 1. ægteskab", "occupation_or_status":"huusmand og skipper"}
+{"id":"104", "gender":"female", "verbatim_name":"Birthe Jensdatter", "position":"hans kone", "age":40, "estimated_birth_year":1747, "marital_status":"i 1. ægteskab"}
+{"id":"105", "gender":"unknown", "verbatim_name":"Jens Lund", "position":"deres barn", "age":13, "estimated_birth_year":1774, "marital_status":"ugift"}
+{"id":"106", "gender":"unknown", "verbatim_name":"Niels Lund", "position":"deres barn", "age":9, "estimated_birth_year":1778, "marital_status":"ugift"}
+{"id":"107", "gender":"unknown", "verbatim_name":"Karen Lund", "position":"deres barn", "age":5, "estimated_birth_year":1782, "marital_status":"ugift"}
+{"id":"108", "gender":"unknown", "verbatim_name":"Anne Lund", "position":"deres barn", "age":2, "estimated_birth_year":1785, "marital_status":"ugift"}
+{"id":"109", "gender":"male", "verbatim_name":"Jens Michelsen", "position":"konens fader", "age":64, "estimated_birth_year":1723, "marital_status":"enkemand efter 1. ægteskab"}
+{"id":"110", "gender":"male", "verbatim_name":"Ole Schou", "position":"mand", "age":43, "estimated_birth_year":1744, "marital_status":"i 1. ægteskab", "occupation_or_status":"huusmand og enrolleret matros"}
+{"id":"111", "gender":"female", "verbatim_name":"Anne Kaares", "position":"hans kone", "age":35, "estimated_birth_year":1752, "marital_status":"i 1. ægteskab"}
+{"id":"112", "gender":"unknown", "verbatim_name":"Maren Schou", "position":"deres barn", "age":12, "estimated_birth_year":1775, "marital_status":"ugift"}
+{"id":"113", "gender":"unknown", "verbatim_name":"Margrethe Schou", "position":"deres barn", "age":9, "estimated_birth_year":1778, "marital_status":"ugift"}
+{"id":"114", "gender":"unknown", "verbatim_name":"Karen Schou", "position":"deres barn", "age":5, "estimated_birth_year":1782, "marital_status":"ugift"}
+{"id":"115", "gender":"unknown", "verbatim_name":"Ole Olesen Schou", "position":"deres barn", "age":1, "estimated_birth_year":1786, "marital_status":"ugift"}
+{"id":"116", "gender":"female", "verbatim_name":"Karen Kaares", "position":"konens moder", "age":69, "estimated_birth_year":1718, "marital_status":"enke efter 1. ægteskab"}
+{"id":"117", "gender":"male", "verbatim_name":"Niels Pedersen", "position":"mand", "age":44, "estimated_birth_year":1743, "marital_status":"i 2. ægteskab", "occupation_or_status":"huusmand og væver"}
+{"id":"118", "gender":"female", "verbatim_name":"Lucie Pedersdatter", "position":"hans kone", "age":44, "estimated_birth_year":1743, "marital_status":"i 1. ægteskab"}
+{"id":"119", "gender":"unknown", "verbatim_name":"Sidsel Nielsdatter", "position":"barn af sidste ægteskab", "age":12, "estimated_birth_year":1775, "marital_status":"ugift"}
+{"id":"120", "gender":"unknown", "verbatim_name":"Anne Nielsdatter", "position":"barn af sidste ægteskab", "age":9, "estimated_birth_year":1778, "marital_status":"ugift"}
+{"id":"121", "gender":"unknown", "verbatim_name":"Peder Jacob Nielsen", "position":"barn af sidste ægteskab", "age":3, "estimated_birth_year":1784, "marital_status":"ugift"}
+{"id":"122", "gender":"male", "verbatim_name":"Søren Pedersen", "position":"mand", "age":60, "estimated_birth_year":1727, "marital_status":"i 1. ægteskab", "occupation_or_status":"huusmand og enrolleret matros"}
+{"id":"123", "gender":"female", "verbatim_name":"Anne Andersdatter", "position":"hans kone", "age":56, "estimated_birth_year":1731, "marital_status":"i 1. ægteskab"}
+{"id":"124", "gender":"female", "verbatim_name":"Anne Margrethe Sørensdatter", "position":"deres datter", "age":20, "estimated_birth_year":1767, "marital_status":"ugift"}
+{"id":"125", "gender":"male", "verbatim_name":"Jeppe Colling", "position":"mand", "age":34, "estimated_birth_year":1753, "marital_status":"i 1. ægteskab", "occupation_or_status":"huusmand og enrolleret matros"}
+{"id":"126", "gender":"female", "verbatim_name":"Kirsten Nielsdatter", "position":"hans kone", "age":34, "estimated_birth_year":1753, "marital_status":"i 1. ægteskab"}
+{"id":"127", "gender":"unknown", "verbatim_name":"Margrethe Colling", "position":"deres barn", "age":6, "estimated_birth_year":1781, "marital_status":"ugift"}
+{"id":"128", "gender":"unknown", "verbatim_name":"Maren Kirstine Colling", "position":"deres barn", "age":2, "estimated_birth_year":1785, "marital_status":"ugift"}
+{"id":"129", "gender":"male", "verbatim_name":"Hans Skræder", "position":"mand", "age":32, "estimated_birth_year":1755, "marital_status":"i 1. ægteskab", "occupation_or_status":"huusmand og enrolleret matros"}
+{"id":"130", "gender":"female", "verbatim_name":"Magdalene Løjet", "position":"hans kone", "age":27, "estimated_birth_year":1760, "marital_status":"i 1. ægteskab"}
+{"id":"131", "gender":"female", "verbatim_name":"Abelone Hansdatter", "position":"deres datter", "age":3, "estimated_birth_year":1784, "marital_status":"ugift"}
+{"id":"132", "gender":"male", "verbatim_name":"Michel Grimmer", "position":"mand", "age":56, "estimated_birth_year":1731, "marital_status":"i 1. ægteskab", "occupation_or_status":"huusmand og enrolleret matros"}
+{"id":"133", "gender":"female", "verbatim_name":"Anne Nielsdatter", "position":"hans kone", "age":64, "estimated_birth_year":1723, "marital_status":"i 1. ægteskab"}
+
+
+
+
+
+
+

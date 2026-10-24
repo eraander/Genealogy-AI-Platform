@@ -1,0 +1,29 @@
+source_date_raw: str = Field(description="Verbatim date string as recorded in record")
+    year: int = Field(description="Year of the event")
+    tag: str = Field(description="Tag to identify the event")
+    # is_stillborn: bool = Field(default=False, description="True if marked dødfødt/dødfødde")
+    is_illegitimate: bool = Field(default=False, description="True if marked uægte or illeg.")
+    location_raw: str = Field(description="Verbatim location string as recorded in record")
+    
+    child: Entity
+    father: Optional[Entity] = None
+    mother: Optional[Entity] = None
+    
+    carrier: Optional[Entity] = Field(
+        None, 
+        description="Person carrying or holding child (e.g., 'bar barnet', 'susc.')"
+    )
+    witnesses: List[Entity] = Field(
+        default_factory=list, 
+        description="Godparents / witnesses listed under 'test.' or 'fadd.'"
+    )
+    bystanders: List[Entity] = Field(
+        default_factory=list, 
+        description="People mentioned who are neither witnesses nor parents"
+    )
+    relations: List[Relation] = Field(
+        default_factory=list,
+        description="Anyone mentioned who is not the child, parents, or witnesses."
+    )
+
+    
