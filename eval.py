@@ -9,7 +9,7 @@ from core.celery_app import celery_app
 
 load_dotenv()
 
-claude = Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
+claude = Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"), max_retries=0)
 
 class MetricScore(BaseModel):
     score: float = Field(..., description="Score from 0.0 (failing) to 1.0 (perfect)")
@@ -47,6 +47,12 @@ def evaluate_invariant(errors, filename, fileline, linenum):
     max_retries=3,
     default_retry_delay=10,
     acks_late=True
+)
+
+@retry(
+    wait=wait_random_exponential(min=1, max=10),
+    stop=stop_after_attempt(4),
+    retry=retry_if_exception_type((ValidationError, anthropic.APIError))
 )
 def evaluate_agent_output(self, query: str, context: str, output: str) -> str:
     """
