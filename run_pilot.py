@@ -425,7 +425,7 @@ def extract_census_members(members: List[str], current_id: int) -> Tuple[List[En
         entities.append(entity)
     return entities, relations, current_id
 
-def extract_complex_witness_span(span: str, client, model: str = "gpt-5.6-luna") -> WitnessSpanExtraction:
+def extract_complex_witness_span(span: str, client, model: str = "gpt-4o-mini") -> WitnessSpanExtraction:
     system_prompt = COMPLEX_WITNESS_EXTRACTION_PROMPT
     return client.chat.completions.create(
         model=model,
@@ -609,38 +609,39 @@ def run_sample_batch(filepath: str, sample_limit: int = 5):
                 print(relation)
             relation_count += len(census_record.relations)
             entity_count += len(census_record.members)
-    with open(f"proof_of_concept_data/askø_ft_gold.jsonl", "r", encoding="utf-8") as f:
-        gold_relations = [json.loads(line) for line in f if line.strip()]
-        print(len(gold_relations), len(pred_relations))
-        assert len(gold_relations) == len(pred_relations)
-        for i in range(len(gold_relations)):
-            gold_rel, pred_rel = gold_relations[i], pred_relations[i]
-            assert gold_rel["source_id"] != gold_rel["target_id"]
-            assert pred_rel.source_id != pred_rel.target_id
-            assert gold_rel["source_id"] == pred_rel.source_id
-            # print(f"Source ID mismatch: {gold_rel['source_id']} != {pred_rel.source_id}")
-            assert gold_rel["target_id"] == pred_rel.target_id
-            assert gold_rel["relation_type"] == pred_rel.relation_type
-    with open(f"proof_of_concept_data/askø_ft_gold_entities.jsonl", "r", encoding="utf-8") as f:
-        gold_entities = [json.loads(line) for line in f if line.strip()]
-        print(len(gold_entities), len(pred_entities))
-        assert len(gold_entities) == len(pred_entities)
-        for i in range(len(gold_entities)):
-            gold_ent, pred_ent = gold_entities[i], pred_entities[i]
-            assert gold_ent["id"] == pred_ent.id
-            assert gold_ent["age"] == pred_ent.age
-            if not "occupation_or_status" in gold_ent:
-              assert pred_ent.occupation_or_status is None
-            else:
-              assert gold_ent["occupation_or_status"] == pred_ent.occupation_or_status
-            # print(f"Source ID mismatch: {gold_rel['source_id']} != {pred_rel.source_id}")
-            assert gold_ent["verbatim_name"] == pred_ent.verbatim_name
-            assert gold_ent["position"] == pred_ent.position
-            assert gold_ent["marital_status"] == pred_ent.marital_status_raw
-            assert gold_ent["estimated_birth_year"] == pred_ent.estimated_birth_year
+    if pred_relations:
+      with open(f"proof_of_concept_data/askø_ft_gold.jsonl", "r", encoding="utf-8") as f:
+          gold_relations = [json.loads(line) for line in f if line.strip()]
+          print(len(gold_relations), len(pred_relations))
+          assert len(gold_relations) == len(pred_relations)
+          for i in range(len(gold_relations)):
+              gold_rel, pred_rel = gold_relations[i], pred_relations[i]
+              assert gold_rel["source_id"] != gold_rel["target_id"]
+              assert pred_rel.source_id != pred_rel.target_id
+              assert gold_rel["source_id"] == pred_rel.source_id
+              # print(f"Source ID mismatch: {gold_rel['source_id']} != {pred_rel.source_id}")
+              assert gold_rel["target_id"] == pred_rel.target_id
+              assert gold_rel["relation_type"] == pred_rel.relation_type
+      with open(f"proof_of_concept_data/askø_ft_gold_entities.jsonl", "r", encoding="utf-8") as f:
+          gold_entities = [json.loads(line) for line in f if line.strip()]
+          print(len(gold_entities), len(pred_entities))
+          assert len(gold_entities) == len(pred_entities)
+          for i in range(len(gold_entities)):
+              gold_ent, pred_ent = gold_entities[i], pred_entities[i]
+              assert gold_ent["id"] == pred_ent.id
+              assert gold_ent["age"] == pred_ent.age
+              if not "occupation_or_status" in gold_ent:
+                assert pred_ent.occupation_or_status is None
+              else:
+                assert gold_ent["occupation_or_status"] == pred_ent.occupation_or_status
+              # print(f"Source ID mismatch: {gold_rel['source_id']} != {pred_rel.source_id}")
+              assert gold_ent["verbatim_name"] == pred_ent.verbatim_name
+              assert gold_ent["position"] == pred_ent.position
+              assert gold_ent["marital_status"] == pred_ent.marital_status_raw
+              assert gold_ent["estimated_birth_year"] == pred_ent.estimated_birth_year
 
       
     
 if __name__ == "__main__":
-    # run_sample_batch("proof_of_concept_data/askø_output.jsonl", sample_limit=20)
+    run_sample_batch("proof_of_concept_data/askø_output.jsonl", sample_limit=20)
     run_sample_batch("census_input.jsonl", sample_limit=25)

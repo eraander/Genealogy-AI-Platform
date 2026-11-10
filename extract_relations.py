@@ -67,7 +67,7 @@ class Relation(BaseModel):
 
 class BirthRecordExtraction(BaseModel):
     source_date_raw: str = Field(description="Verbatim date string as recorded in record")
-    year: int = Field(description="Year of the event")
+    year: Optional[int] = Field(None, description="Year of the event")
     tag: str = Field(description="Tag to identify the event")
     # is_stillborn: bool = Field(default=False, description="True if marked dødfødt/dødfødde")
     is_illegitimate: bool = Field(default=False, description="True if marked uægte or illeg.")
@@ -97,6 +97,7 @@ class BirthRecordExtraction(BaseModel):
     @model_validator(mode="after")
     def get_record_year(self) -> "BirthRecordExtraction":
         """Parses the 4-digit census year from the household header and injects it into all members."""
+        print(self.source_date_raw)
         match = re.search(r"\b(1\d{3})\b", self.source_date_raw)
         year = int(match.group(1)) if match else None
         self.year = year
